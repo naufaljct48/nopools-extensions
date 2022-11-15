@@ -13,10 +13,6 @@ Indonesian Sources:
 
 ## Current Repo
 
-| Source Type  | Description                                   | Link                                                                |
-| ------------ | --------------------------------------------- | ------------------------------------------------------------------- |
-| Stable (0.6) | Stable versions of the sources. (Recommended) | [Click me!](https://github.com/naufaljct48/nopools-extensions/0.6/) |
-
-# MangaStream Extensions
-
-[Click me](https://naufaljct48.github.io/nopools-extensions/0.6/) to go to the index page!
+| Source Type  | Description                                   | Link                                                               |
+| ------------ | --------------------------------------------- | ------------------------------------------------------------------ |
+| Stable (0.6) | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
