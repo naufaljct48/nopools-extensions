@@ -15,4 +15,4 @@ Join the [Discord](https://discord.gg/rmf6jQpMU9) for support and more sources!
 
 # MangaStream Extensions
 
-[Click me](https://naufaljct48.github.io/nopools-extensions/) to go to the index page!
+[Click me](https://naufaljct48.github.io/nopools-extensions/0.6/) to go to the index page!
