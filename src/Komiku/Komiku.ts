@@ -13,7 +13,7 @@ import { KomikuParser } from "./KomikuParser";
 const KOMIKU_DOMAIN = "https://komiku.com";
 
 export const KomikuInfo: SourceInfo = {
-  version: getExportVersion("0.0.6"),
+  version: getExportVersion("0.0.1"),
   name: "Komiku.com",
   description: "Extension that pulls manga from Komiku.com",
   author: "NaufalJCT48",
@@ -120,7 +120,4 @@ export class Komiku extends MangaStream {
     */
 
   override manga_tag_selector_box = ".seriestugenre";
-  override manga_selector_author = "td:contains(Author)";
-  override manga_selector_artist = "td:contains(Artist)";
-  override manga_selector_status = "td:contains(Status)";
 }

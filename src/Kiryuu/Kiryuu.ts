@@ -13,7 +13,7 @@ import { KiryuuParser } from "./KiryuuParser";
 const KIRYUU_DOMAIN = "https://kiryuu.id";
 
 export const KiryuuInfo: SourceInfo = {
-  version: getExportVersion("0.0.6"),
+  version: getExportVersion("0.0.1"),
   name: "Kiryuu",
   description: "Extension that pulls manga from Kiryuu",
   author: "NaufalJCT48",
@@ -120,7 +120,4 @@ export class Kiryuu extends MangaStream {
     */
 
   override manga_tag_selector_box = ".seriestugenre";
-  override manga_selector_author = "td:contains(Author)";
-  override manga_selector_artist = "td:contains(Artist)";
-  override manga_selector_status = "td:contains(Status)";
 }

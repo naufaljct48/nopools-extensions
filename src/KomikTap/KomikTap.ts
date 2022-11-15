@@ -13,7 +13,7 @@ import { KomikTapParser } from "./KomikTapParser";
 const KOMIKTAP_DOMAIN = "https://194.233.66.232";
 
 export const KomikTapInfo: SourceInfo = {
-  version: getExportVersion("0.0.6"),
+  version: getExportVersion("0.0.1"),
   name: "KomikTap",
   description: "Extension that pulls manga from KomikTap",
   author: "NaufalJCT48",
@@ -122,7 +122,4 @@ export class KomikTap extends MangaStream {
     */
 
   override manga_tag_selector_box = ".seriestugenre";
-  override manga_selector_author = "td:contains(Author)";
-  override manga_selector_artist = "td:contains(Artist)";
-  override manga_selector_status = "td:contains(Status)";
 }
