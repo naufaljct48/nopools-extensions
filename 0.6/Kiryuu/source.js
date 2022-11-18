@@ -1063,9 +1063,9 @@ class Kiryuu extends MangaStream_1.MangaStream {
         this.homescreen_LatestUpdate_selector_box = "h2:contains(Project Update)";
         this.homescreen_NewManga_enabled = false;
         this.homescreen_NewManga_selector = "h2:contains(Rilisan Terbaru)";
-        this.homescreen_TopAllTime_enabled = false;
-        this.homescreen_TopMonthly_enabled = false;
-        this.homescreen_TopWeekly_enabled = false;
+        this.homescreen_TopAllTime_enabled = true;
+        this.homescreen_TopMonthly_enabled = true;
+        this.homescreen_TopWeekly_enabled = true;
         /*
           ----TAG SELECTORS
           PRESET 1 (default): Genres are on homepage ex. https://mangagenki.com/

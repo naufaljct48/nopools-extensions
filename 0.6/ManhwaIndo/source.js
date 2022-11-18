@@ -981,222 +981,6 @@ __exportStar(require("./RawData"), exports);
 },{"./Chapter":14,"./ChapterDetails":15,"./Constants":16,"./DynamicUI":32,"./HomeSection":33,"./Languages":34,"./Manga":35,"./MangaTile":36,"./MangaUpdate":37,"./PagedResults":38,"./RawData":39,"./RequestHeaders":40,"./RequestInterceptor":41,"./RequestManager":42,"./RequestObject":43,"./ResponseObject":44,"./SearchField":45,"./SearchRequest":46,"./SourceInfo":47,"./SourceManga":48,"./SourceStateManager":49,"./SourceTag":50,"./TagSection":51,"./TrackedManga":52,"./TrackedMangaChapterReadAction":53,"./TrackerActionQueue":54}],56:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KomikTap = exports.KomikTapInfo = void 0;
-/* eslint-disable linebreak-style */
-const paperback_extensions_common_1 = require("paperback-extensions-common");
-const MangaStream_1 = require("../MangaStream");
-const KomikTapParser_1 = require("./KomikTapParser");
-const KOMIKTAP_DOMAIN = "https://194.233.66.232";
-exports.KomikTapInfo = {
-    version: (0, MangaStream_1.getExportVersion)("0.0.1"),
-    name: "KomikTap",
-    description: "Extension that pulls manga from KomikTap",
-    author: "NaufalJCT48",
-    authorWebsite: "http://github.com/naufaljct48",
-    icon: "icon.png",
-    contentRating: paperback_extensions_common_1.ContentRating.ADULT,
-    websiteBaseURL: KOMIKTAP_DOMAIN,
-    sourceTags: [
-        {
-            text: "Notifications",
-            type: paperback_extensions_common_1.TagType.GREEN,
-        },
-        {
-            text: "Indonesian",
-            type: paperback_extensions_common_1.TagType.GREY,
-        },
-        {
-            text: "18+",
-            type: paperback_extensions_common_1.TagType.YELLOW,
-        },
-    ],
-};
-class KomikTap extends MangaStream_1.MangaStream {
-    constructor() {
-        //FOR ALL THE SELECTIONS, PLEASE CHECK THE MangaSteam.ts FILE!!!
-        super(...arguments);
-        this.baseUrl = KOMIKTAP_DOMAIN;
-        this.languageCode = paperback_extensions_common_1.LanguageCode.INDONESIAN;
-        this.parser = new KomikTapParser_1.KomikTapParser();
-        this.sourceTraversalPathName = "manga";
-        this.requestManager = createRequestManager({
-            requestsPerSecond: 2,
-            requestTimeout: 15000,
-        });
-        this.dateMonths = {
-            january: "januari",
-            february: "februari",
-            march: "maret",
-            april: "april",
-            may: "mei",
-            june: "juni",
-            july: "juli",
-            august: "agustus",
-            september: "september",
-            october: "oktober",
-            november: "november",
-            december: "desember",
-        };
-        this.dateTimeAgo = {
-            now: ["yang lalu"],
-            yesterday: ["kemarin"],
-            years: ["tahun"],
-            months: ["bulan"],
-            weeks: ["minggu"],
-            days: ["hari"],
-            hours: ["jam"],
-            minutes: ["menit"],
-            seconds: ["detik"],
-        };
-        //----MANGA DETAILS SELECTORS
-        /*
-          If a website uses different names/words for the status below, change them to these.
-          These must also be changed id a different language is used!
-          Don't worry, these are case insensitive.
-          */
-        //manga_StatusTypes: object = {
-        //    ONGOING: "ongoing",
-        //    COMPLETED: "completed"
-        //}
-        //----HOMESCREEN SELECTORS
-        //Disabling some of these will cause some Home-Page tests to fail, edit these test files to match the setting.
-        //Always be sure to test this in the app!
-        this.homescreen_PopularToday_enabled = true;
-        this.homescreen_PopularToday_selector = "h2:contains(Popular Today)";
-        this.homescreen_LatestUpdate_enabled = true;
-        this.homescreen_LatestUpdate_selector_box = "h2:contains(Latest Update)";
-        this.homescreen_NewManga_enabled = false;
-        this.homescreen_TopAllTime_enabled = true;
-        this.homescreen_TopMonthly_enabled = true;
-        this.homescreen_TopWeekly_enabled = true;
-        /*
-          ----TAG SELECTORS
-          PRESET 1 (default): Genres are on homepage ex. https://mangagenki.com/
-          tags_SubdirectoryPathName: string = ""
-          tags_selector_box: string = "ul.genre"
-          tags_selector_item: string = "li"
-          tags_selector_label: string = ""
-      
-          PRESET 2: with /genre/ subdirectory ex. https://mangadark.com/genres/
-          tags_SubdirectoryPathName: string = "/genres/"
-          tags_selector_box: string = "ul.genre"
-          tags_selector_item: string = "li"
-          tags_selector_label: string = "span"
-          */
-        this.manga_tag_selector_box = ".seriestugenre";
-    }
-}
-exports.KomikTap = KomikTap;
-
-},{"../MangaStream":59,"./KomikTapParser":57,"paperback-extensions-common":13}],57:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.KomikTapParser = void 0;
-/* eslint-disable linebreak-style */
-const MangaStreamParser_1 = require("../MangaStreamParser");
-const paperback_extensions_common_1 = require("paperback-extensions-common");
-class KomikTapParser extends MangaStreamParser_1.MangaStreamParser {
-    parseChapterDetails($, mangaId, chapterId) {
-        const data = $.html();
-        const pages = [];
-        //To avoid our regex capturing more scrips, we stop at the first match of ";", also known as the first ending the matching script.
-        let obj = /ts_reader.run\((.[^;]+)\)/.exec(data)?.[1] ?? ""; //Get the data else return null.
-        if (obj == "")
-            throw new Error(`Failed to find page details script for manga ${mangaId}`); //If null, throw error, else parse data to json.
-        obj = JSON.parse(obj);
-        if (!obj?.sources)
-            throw new Error(`Failed for find sources property for manga ${mangaId}`);
-        for (const index of obj.sources) {
-            //Check all sources, if empty continue.
-            if (index?.images.length == 0)
-                continue;
-            index.images.map((p) => {
-                //Asura has a dead link at the start of each of their chapters (Thanks to pandeynmn for noticing)
-                if (p ==
-                    "https://www.asurascans.com/wp-content/uploads/2021/04/page100-10.jpg")
-                    return;
-                pages.push(encodeURI(p));
-            });
-        }
-        const chapterDetails = createChapterDetails({
-            id: chapterId,
-            mangaId: mangaId,
-            pages: pages,
-            longStrip: false,
-        });
-        return chapterDetails;
-    }
-    parseMangaDetails($, mangaId, source) {
-        const titles = [];
-        titles.push(this.decodeHTMLEntity($("h1.entry-title").text().replace("Komik ", "").trim()));
-        const altTitles = $(`span:contains(${source.manga_selector_AlternativeTitles}), b:contains(${source.manga_selector_AlternativeTitles})+span, .imptdt:contains(${source.manga_selector_AlternativeTitles}) i, h1.entry-title+span`)
-            .contents()
-            .remove()
-            .last()
-            .text()
-            .split(","); //Language dependant
-        for (const title of altTitles) {
-            if (title == "")
-                continue;
-            titles.push(this.decodeHTMLEntity(title.trim()));
-        }
-        const author = $("td:contains(Author)+td").contents().last().text().trim(); //Language dependant
-        const artist = $("td:contains(Artist)+td").contents().last().text().trim(); //Language dependant
-        const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
-        const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
-        const arrayTags = [];
-        for (const tag of $("a", source.manga_tag_selector_box).toArray()) {
-            const label = $(tag).text().trim();
-            const id = encodeURI($(tag)
-                .attr("href")
-                ?.replace(`${source.baseUrl}/${source.manga_tag_TraversalPathName}/`, "")
-                .replace(/\//g, "") ?? "");
-            if (!id || !label)
-                continue;
-            arrayTags.push({ id: id, label: label });
-        }
-        const tagSections = [
-            createTagSection({
-                id: "0",
-                label: "genres",
-                tags: arrayTags.map((x) => createTag(x)),
-            }),
-        ];
-        const rawStatus = $(`span:contains(${source.manga_selector_status}), .fmed b:contains(${source.manga_selector_status})+span, .imptdt:contains(${source.manga_selector_status}) i`)
-            .contents()
-            .remove()
-            .last()
-            .text()
-            .trim();
-        let status = paperback_extensions_common_1.MangaStatus.ONGOING;
-        switch (rawStatus.toLowerCase()) {
-            case source.manga_StatusTypes.ONGOING.toLowerCase():
-                status = paperback_extensions_common_1.MangaStatus.ONGOING;
-                break;
-            case source.manga_StatusTypes.COMPLETED.toLowerCase():
-                status = paperback_extensions_common_1.MangaStatus.COMPLETED;
-                break;
-            default:
-                status = paperback_extensions_common_1.MangaStatus.ONGOING;
-                break;
-        }
-        return createManga({
-            id: mangaId,
-            titles: titles,
-            image: image ? image : source.fallbackImage,
-            status: status,
-            author: author == "" ? "Unknown" : author,
-            artist: artist == "" ? "Unknown" : artist,
-            tags: tagSections,
-            desc: description,
-        });
-    }
-}
-exports.KomikTapParser = KomikTapParser;
-
-},{"../MangaStreamParser":60,"paperback-extensions-common":13}],58:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.convertDateAgo = exports.convertDate = void 0;
 /* eslint-disable linebreak-style */
 function convertDate(rawDate, source) {
@@ -1277,7 +1061,7 @@ function convertDateAgo(date, source) {
 }
 exports.convertDateAgo = convertDateAgo;
 
-},{}],59:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MangaStream = exports.getExportVersion = void 0;
@@ -1624,7 +1408,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
 }
 exports.MangaStream = MangaStream;
 
-},{"./MangaStreamParser":60,"paperback-extensions-common":13}],60:[function(require,module,exports){
+},{"./MangaStreamParser":58,"paperback-extensions-common":13}],58:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MangaStreamParser = void 0;
@@ -2004,5 +1788,228 @@ class MangaStreamParser {
 }
 exports.MangaStreamParser = MangaStreamParser;
 
-},{"./LanguageUtils":58,"entities":9,"paperback-extensions-common":13}]},{},[56])(56)
+},{"./LanguageUtils":56,"entities":9,"paperback-extensions-common":13}],59:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ManhwaIndo = exports.ManhwaIndoInfo = void 0;
+/* eslint-disable linebreak-style */
+const paperback_extensions_common_1 = require("paperback-extensions-common");
+const MangaStream_1 = require("../MangaStream");
+const ManhwaIndoParser_1 = require("./ManhwaIndoParser");
+const MANHWAINDO_DOMAIN = "https://manhwaindo.id";
+exports.ManhwaIndoInfo = {
+    version: (0, MangaStream_1.getExportVersion)("0.0.1"),
+    name: "ManhwaIndo",
+    description: "Extension that pulls manga from ManhwaIndo",
+    author: "NaufalJCT48",
+    authorWebsite: "http://github.com/naufaljct48",
+    icon: "icon.png",
+    contentRating: paperback_extensions_common_1.ContentRating.MATURE,
+    websiteBaseURL: MANHWAINDO_DOMAIN,
+    sourceTags: [
+        {
+            text: "Notifications",
+            type: paperback_extensions_common_1.TagType.GREEN,
+        },
+        {
+            text: "Indonesian",
+            type: paperback_extensions_common_1.TagType.GREY,
+        },
+    ],
+};
+class ManhwaIndo extends MangaStream_1.MangaStream {
+    constructor() {
+        //FOR ALL THE SELECTIONS, PLEASE CHECK THE MangaSteam.ts FILE!!!
+        super(...arguments);
+        this.baseUrl = MANHWAINDO_DOMAIN;
+        this.languageCode = paperback_extensions_common_1.LanguageCode.INDONESIAN;
+        this.parser = new ManhwaIndoParser_1.ManhwaIndoParser();
+        this.sourceTraversalPathName = "series";
+        this.requestManager = createRequestManager({
+            requestsPerSecond: 2,
+            requestTimeout: 15000,
+        });
+        this.dateMonths = {
+            january: "januari",
+            february: "februari",
+            march: "maret",
+            april: "april",
+            may: "mei",
+            june: "juni",
+            july: "juli",
+            august: "agustus",
+            september: "september",
+            october: "oktober",
+            november: "november",
+            december: "desember",
+        };
+        this.dateTimeAgo = {
+            now: ["yang lalu"],
+            yesterday: ["kemarin"],
+            years: ["tahun"],
+            months: ["bulan"],
+            weeks: ["minggu"],
+            days: ["hari"],
+            hours: ["jam"],
+            minutes: ["menit"],
+            seconds: ["detik"],
+        };
+        //----MANGA DETAILS SELECTORS
+        /*
+          If a website uses different names/words for the status below, change them to these.
+          These must also be changed id a different language is used!
+          Don't worry, these are case insensitive.
+          */
+        //manga_StatusTypes: object = {
+        //    ONGOING: "ongoing",
+        //    COMPLETED: "completed"
+        //}
+        //----HOMESCREEN SELECTORS
+        //Disabling some of these will cause some Home-Page tests to fail, edit these test files to match the setting.
+        //Always be sure to test this in the app!
+        this.homescreen_PopularToday_enabled = true;
+        this.homescreen_PopularToday_selector = "h2:contains(Terpopuler Hari Ini)";
+        this.homescreen_LatestUpdate_enabled = true;
+        this.homescreen_LatestUpdate_selector_box = "h2:contains(Project Update)";
+        this.homescreen_NewManga_enabled = true;
+        this.homescreen_NewManga_selector = "h2:contains(Rilisan Terbaru)";
+        this.homescreen_TopAllTime_enabled = true;
+        this.homescreen_TopMonthly_enabled = true;
+        this.homescreen_TopWeekly_enabled = true;
+        /*
+          ----TAG SELECTORS
+          PRESET 1 (default): Genres are on homepage ex. https://mangagenki.com/
+          tags_SubdirectoryPathName: string = ""
+          tags_selector_box: string = "ul.genre"
+          tags_selector_item: string = "li"
+          tags_selector_label: string = ""
+      
+          PRESET 2: with /genre/ subdirectory ex. https://mangadark.com/genres/
+          tags_SubdirectoryPathName: string = "/genres/"
+          tags_selector_box: string = "ul.genre"
+          tags_selector_item: string = "li"
+          tags_selector_label: string = "span"
+          */
+        // override manga_tag_selector_box = ".seriestugenre";
+    }
+}
+exports.ManhwaIndo = ManhwaIndo;
+
+},{"../MangaStream":57,"./ManhwaIndoParser":60,"paperback-extensions-common":13}],60:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ManhwaIndoParser = void 0;
+/* eslint-disable linebreak-style */
+const MangaStreamParser_1 = require("../MangaStreamParser");
+const paperback_extensions_common_1 = require("paperback-extensions-common");
+class ManhwaIndoParser extends MangaStreamParser_1.MangaStreamParser {
+    parseChapterDetails($, mangaId, chapterId) {
+        const data = $.html();
+        const pages = [];
+        //To avoid our regex capturing more scrips, we stop at the first match of ";", also known as the first ending the matching script.
+        let obj = /ts_reader.run\((.[^;]+)\)/.exec(data)?.[1] ?? ""; //Get the data else return null.
+        if (obj == "")
+            throw new Error(`Failed to find page details script for manga ${mangaId}`); //If null, throw error, else parse data to json.
+        obj = JSON.parse(obj);
+        if (!obj?.sources)
+            throw new Error(`Failed for find sources property for manga ${mangaId}`);
+        for (const index of obj.sources) {
+            //Check all sources, if empty continue.
+            if (index?.images.length == 0)
+                continue;
+            index.images.map((p) => {
+                //Asura has a dead link at the start of each of their chapters (Thanks to pandeynmn for noticing)
+                if (p ==
+                    "https://www.asurascans.com/wp-content/uploads/2021/04/page100-10.jpg")
+                    return;
+                pages.push(encodeURI(p));
+            });
+        }
+        const chapterDetails = createChapterDetails({
+            id: chapterId,
+            mangaId: mangaId,
+            pages: pages,
+            longStrip: false,
+        });
+        return chapterDetails;
+    }
+    parseMangaDetails($, mangaId, source) {
+        const titles = [];
+        titles.push(this.decodeHTMLEntity($("h1.entry-title").text().replace("Komik ", "").trim()));
+        const altTitles = $(`span:contains(${source.manga_selector_AlternativeTitles}), b:contains(${source.manga_selector_AlternativeTitles})+span, .imptdt:contains(${source.manga_selector_AlternativeTitles}) i, h1.entry-title+span`)
+            .contents()
+            .remove()
+            .last()
+            .text()
+            .split(","); //Language dependant
+        for (const title of altTitles) {
+            if (title == "")
+                continue;
+            titles.push(this.decodeHTMLEntity(title.trim()));
+        }
+        const author = $(`span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, .imptdt:contains(${source.manga_selector_author}) i`)
+            .contents()
+            .remove()
+            .last()
+            .text()
+            .trim(); //Language dependant
+        const artist = $(`span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, .imptdt:contains(${source.manga_selector_artist}) i`)
+            .contents()
+            .remove()
+            .last()
+            .text()
+            .trim(); //Language dependant
+        const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
+        const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
+        const arrayTags = [];
+        for (const tag of $("a", source.manga_tag_selector_box).toArray()) {
+            const label = $(tag).text().trim();
+            const id = encodeURI($(tag)
+                .attr("href")
+                ?.replace(`${source.baseUrl}/${source.manga_tag_TraversalPathName}/`, "")
+                .replace(/\//g, "") ?? "");
+            if (!id || !label)
+                continue;
+            arrayTags.push({ id: id, label: label });
+        }
+        const tagSections = [
+            createTagSection({
+                id: "0",
+                label: "genres",
+                tags: arrayTags.map((x) => createTag(x)),
+            }),
+        ];
+        const rawStatus = $(`span:contains(${source.manga_selector_status}), .fmed b:contains(${source.manga_selector_status})+span, .imptdt:contains(${source.manga_selector_status}) i`)
+            .contents()
+            .remove()
+            .last()
+            .text()
+            .trim();
+        let status = paperback_extensions_common_1.MangaStatus.ONGOING;
+        switch (rawStatus.toLowerCase()) {
+            case source.manga_StatusTypes.ONGOING.toLowerCase():
+                status = paperback_extensions_common_1.MangaStatus.ONGOING;
+                break;
+            case source.manga_StatusTypes.COMPLETED.toLowerCase():
+                status = paperback_extensions_common_1.MangaStatus.COMPLETED;
+                break;
+            default:
+                status = paperback_extensions_common_1.MangaStatus.ONGOING;
+                break;
+        }
+        return createManga({
+            id: mangaId,
+            titles: titles,
+            image: image ? image : source.fallbackImage,
+            status: status,
+            author: author == "" ? "Unknown" : author,
+            artist: artist == "" ? "Unknown" : artist,
+            tags: tagSections,
+            desc: description,
+        });
+    }
+}
+exports.ManhwaIndoParser = ManhwaIndoParser;
+
+},{"../MangaStreamParser":58,"paperback-extensions-common":13}]},{},[59])(59)
 });
