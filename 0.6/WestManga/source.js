@@ -1821,21 +1821,21 @@ exports.MangaStreamParser = MangaStreamParser;
 },{"./LanguageUtils":56,"entities":9,"paperback-extensions-common":13}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ManhwaIndo = exports.ManhwaIndoInfo = void 0;
+exports.WestManga = exports.WestMangaInfo = void 0;
 /* eslint-disable linebreak-style */
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const MangaStream_1 = require("../MangaStream");
-const ManhwaIndoParser_1 = require("./ManhwaIndoParser");
-const MANHWAINDO_DOMAIN = "https://manhwaindo.id";
-exports.ManhwaIndoInfo = {
+const WestMangaParser_1 = require("./WestMangaParser");
+const WESTMANGA_DOMAIN = "https://westmanga.info";
+exports.WestMangaInfo = {
     version: (0, MangaStream_1.getExportVersion)("0.0.1"),
-    name: "ManhwaIndo",
-    description: "Extension that pulls manga from ManhwaIndo",
+    name: "WestManga",
+    description: "Extension that pulls manga from WestManga",
     author: "NaufalJCT48",
     authorWebsite: "http://github.com/naufaljct48",
     icon: "icon.png",
     contentRating: paperback_extensions_common_1.ContentRating.MATURE,
-    websiteBaseURL: MANHWAINDO_DOMAIN,
+    websiteBaseURL: WESTMANGA_DOMAIN,
     sourceTags: [
         {
             text: "Notifications",
@@ -1847,43 +1847,18 @@ exports.ManhwaIndoInfo = {
         },
     ],
 };
-class ManhwaIndo extends MangaStream_1.MangaStream {
+class WestManga extends MangaStream_1.MangaStream {
     constructor() {
         //FOR ALL THE SELECTIONS, PLEASE CHECK THE MangaSteam.ts FILE!!!
         super(...arguments);
-        this.baseUrl = MANHWAINDO_DOMAIN;
-        this.languageCode = paperback_extensions_common_1.LanguageCode.INDONESIAN;
-        this.parser = new ManhwaIndoParser_1.ManhwaIndoParser();
-        this.sourceTraversalPathName = "series";
+        this.baseUrl = WESTMANGA_DOMAIN;
+        this.languageCode = paperback_extensions_common_1.LanguageCode.ENGLISH;
+        this.parser = new WestMangaParser_1.WestMangaParser();
+        this.sourceTraversalPathName = "manga";
         this.requestManager = createRequestManager({
             requestsPerSecond: 2,
             requestTimeout: 15000,
         });
-        this.dateMonths = {
-            january: "januari",
-            february: "februari",
-            march: "maret",
-            april: "april",
-            may: "mei",
-            june: "juni",
-            july: "juli",
-            august: "agustus",
-            september: "september",
-            october: "oktober",
-            november: "november",
-            december: "desember",
-        };
-        this.dateTimeAgo = {
-            now: ["yang lalu"],
-            yesterday: ["kemarin"],
-            years: ["tahun"],
-            months: ["bulan"],
-            weeks: ["minggu"],
-            days: ["hari"],
-            hours: ["jam"],
-            minutes: ["menit"],
-            seconds: ["detik"],
-        };
         //----MANGA DETAILS SELECTORS
         /*
           If a website uses different names/words for the status below, change them to these.
@@ -1898,11 +1873,11 @@ class ManhwaIndo extends MangaStream_1.MangaStream {
         //Disabling some of these will cause some Home-Page tests to fail, edit these test files to match the setting.
         //Always be sure to test this in the app!
         this.homescreen_PopularToday_enabled = true;
-        this.homescreen_PopularToday_selector = "h2:contains(Terpopuler Hari Ini)";
+        this.homescreen_PopularToday_selector = "h2:contains(Komik Popular Hari Ini...)";
         this.homescreen_LatestUpdate_enabled = true;
-        this.homescreen_LatestUpdate_selector_box = "h2:contains(Project Update)";
+        this.homescreen_LatestUpdate_selector_box = "h2:contains(UPDATE KOMIK LAINYA...)";
         this.homescreen_NewManga_enabled = true;
-        this.homescreen_NewManga_selector = "h2:contains(Rilisan Terbaru)";
+        this.homescreen_NewManga_selector = "h2:contains(UPDATE PROJECT WESTMANGA)";
         this.homescreen_TopAllTime_enabled = true;
         this.homescreen_TopMonthly_enabled = true;
         this.homescreen_TopWeekly_enabled = true;
@@ -1920,19 +1895,19 @@ class ManhwaIndo extends MangaStream_1.MangaStream {
           tags_selector_item: string = "li"
           tags_selector_label: string = "span"
           */
-        // override manga_tag_selector_box = ".seriestugenre";
+        this.manga_tag_selector_box = ".seriestugenre";
     }
 }
-exports.ManhwaIndo = ManhwaIndo;
+exports.WestManga = WestManga;
 
-},{"../MangaStream":57,"./ManhwaIndoParser":60,"paperback-extensions-common":13}],60:[function(require,module,exports){
+},{"../MangaStream":57,"./WestMangaParser":60,"paperback-extensions-common":13}],60:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ManhwaIndoParser = void 0;
+exports.WestMangaParser = void 0;
 /* eslint-disable linebreak-style */
 const MangaStreamParser_1 = require("../MangaStreamParser");
 const paperback_extensions_common_1 = require("paperback-extensions-common");
-class ManhwaIndoParser extends MangaStreamParser_1.MangaStreamParser {
+class WestMangaParser extends MangaStreamParser_1.MangaStreamParser {
     parseChapterDetails($, mangaId, chapterId) {
         const data = $.html();
         const pages = [];
@@ -1977,18 +1952,8 @@ class ManhwaIndoParser extends MangaStreamParser_1.MangaStreamParser {
                 continue;
             titles.push(this.decodeHTMLEntity(title.trim()));
         }
-        const author = $(`span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, .imptdt:contains(${source.manga_selector_author}) i`)
-            .contents()
-            .remove()
-            .last()
-            .text()
-            .trim(); //Language dependant
-        const artist = $(`span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, .imptdt:contains(${source.manga_selector_artist}) i`)
-            .contents()
-            .remove()
-            .last()
-            .text()
-            .trim(); //Language dependant
+        const author = $("td:contains(Author)+td").contents().last().text().trim(); //Language dependant
+        const artist = $("td:contains(Artist)+td").contents().last().text().trim(); //Language dependant
         const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
         const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
         const arrayTags = [];
@@ -2039,7 +2004,7 @@ class ManhwaIndoParser extends MangaStreamParser_1.MangaStreamParser {
         });
     }
 }
-exports.ManhwaIndoParser = ManhwaIndoParser;
+exports.WestMangaParser = WestMangaParser;
 
 },{"../MangaStreamParser":58,"paperback-extensions-common":13}]},{},[59])(59)
 });
