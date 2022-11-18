@@ -8,19 +8,19 @@ import {
 
 import { MangaStream, getExportVersion } from "../MangaStream";
 
-import { ManhwaIndoParser } from "./ManhwaIndoParser";
+import { WestMangaParser } from "./WestMangaParser";
 
-const MANHWAINDO_DOMAIN = "https://manhwaindo.id";
+const WESTMANGA_DOMAIN = "https://westmanga.info";
 
-export const ManhwaIndoInfo: SourceInfo = {
+export const WestMangaInfo: SourceInfo = {
   version: getExportVersion("0.0.1"),
-  name: "ManhwaIndo",
-  description: "Extension that pulls manga from ManhwaIndo",
+  name: "WestManga",
+  description: "Extension that pulls manga from WestManga",
   author: "NaufalJCT48",
   authorWebsite: "http://github.com/naufaljct48",
   icon: "icon.png",
   contentRating: ContentRating.MATURE,
-  websiteBaseURL: MANHWAINDO_DOMAIN,
+  websiteBaseURL: WESTMANGA_DOMAIN,
   sourceTags: [
     {
       text: "Notifications",
@@ -33,46 +33,20 @@ export const ManhwaIndoInfo: SourceInfo = {
   ],
 };
 
-export class ManhwaIndo extends MangaStream {
+export class WestManga extends MangaStream {
   //FOR ALL THE SELECTIONS, PLEASE CHECK THE MangaSteam.ts FILE!!!
 
-  baseUrl: string = MANHWAINDO_DOMAIN;
-  languageCode: LanguageCode = LanguageCode.INDONESIAN;
+  baseUrl: string = WESTMANGA_DOMAIN;
+  languageCode: LanguageCode = LanguageCode.ENGLISH;
 
-  override readonly parser: ManhwaIndoParser = new ManhwaIndoParser();
+  override readonly parser: WestMangaParser = new WestMangaParser();
 
-  override sourceTraversalPathName = "series";
+  override sourceTraversalPathName = "manga";
 
   override requestManager = createRequestManager({
     requestsPerSecond: 2,
     requestTimeout: 15000,
   });
-
-  override dateMonths = {
-    january: "januari",
-    february: "februari",
-    march: "maret",
-    april: "april",
-    may: "mei",
-    june: "juni",
-    july: "juli",
-    august: "agustus",
-    september: "september",
-    october: "oktober",
-    november: "november",
-    december: "desember",
-  };
-  override dateTimeAgo = {
-    now: ["yang lalu"],
-    yesterday: ["kemarin"],
-    years: ["tahun"],
-    months: ["bulan"],
-    weeks: ["minggu"],
-    days: ["hari"],
-    hours: ["jam"],
-    minutes: ["menit"],
-    seconds: ["detik"],
-  };
 
   //----MANGA DETAILS SELECTORS
   /*
@@ -92,13 +66,15 @@ export class ManhwaIndo extends MangaStream {
 
   override homescreen_PopularToday_enabled = true;
   override homescreen_PopularToday_selector =
-    "h2:contains(Terpopuler Hari Ini)";
+    "h2:contains(Komik Popular Hari Ini...)";
 
   override homescreen_LatestUpdate_enabled = true;
-  override homescreen_LatestUpdate_selector_box = "h2:contains(Project Update)";
+  override homescreen_LatestUpdate_selector_box =
+    "h2:contains(UPDATE KOMIK LAINYA...)";
 
   override homescreen_NewManga_enabled = true;
-  override homescreen_NewManga_selector = "h2:contains(Rilisan Terbaru)";
+  override homescreen_NewManga_selector =
+    "h2:contains(UPDATE PROJECT WESTMANGA)";
 
   override homescreen_TopAllTime_enabled = true;
   override homescreen_TopMonthly_enabled = true;
@@ -119,5 +95,5 @@ export class ManhwaIndo extends MangaStream {
     tags_selector_label: string = "span"
     */
 
-  // override manga_tag_selector_box = ".seriestugenre";
+  override manga_tag_selector_box = ".seriestugenre";
 }

@@ -8,7 +8,7 @@ import {
   TagSection,
 } from "paperback-extensions-common";
 
-export class ManhwaIndoParser extends MangaStreamParser {
+export class WestMangaParser extends MangaStreamParser {
   override parseChapterDetails(
     $: CheerioStatic,
     mangaId: string,
@@ -75,22 +75,8 @@ export class ManhwaIndoParser extends MangaStreamParser {
       titles.push(this.decodeHTMLEntity(title.trim()));
     }
 
-    const author = $(
-      `span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, .imptdt:contains(${source.manga_selector_author}) i`
-    )
-      .contents()
-      .remove()
-      .last()
-      .text()
-      .trim(); //Language dependant
-    const artist = $(
-      `span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, .imptdt:contains(${source.manga_selector_artist}) i`
-    )
-      .contents()
-      .remove()
-      .last()
-      .text()
-      .trim(); //Language dependant
+    const author = $("td:contains(Author)+td").contents().last().text().trim(); //Language dependant
+    const artist = $("td:contains(Artist)+td").contents().last().text().trim(); //Language dependant
     const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
     const description = this.decodeHTMLEntity(
       $('div[itemprop="description"]').text().trim()
