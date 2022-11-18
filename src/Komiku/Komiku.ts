@@ -100,9 +100,9 @@ export class Komiku extends MangaStream {
 
   override homescreen_NewManga_enabled = false;
 
-  override homescreen_TopAllTime_enabled = false;
-  override homescreen_TopMonthly_enabled = false;
-  override homescreen_TopWeekly_enabled = false;
+  override homescreen_TopAllTime_enabled = true;
+  override homescreen_TopMonthly_enabled = true;
+  override homescreen_TopWeekly_enabled = true;
 
   /*
     ----TAG SELECTORS

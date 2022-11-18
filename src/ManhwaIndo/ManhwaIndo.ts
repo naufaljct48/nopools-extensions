@@ -8,19 +8,19 @@ import {
 
 import { MangaStream, getExportVersion } from "../MangaStream";
 
-import { KiryuuParser } from "./KiryuuParser";
+import { ManhwaIndoParser } from "./ManhwaIndoParser";
 
-const KIRYUU_DOMAIN = "https://kiryuu.id";
+const MANHWAINDO_DOMAIN = "https://manhwaindo.id";
 
-export const KiryuuInfo: SourceInfo = {
+export const ManhwaIndoInfo: SourceInfo = {
   version: getExportVersion("0.0.1"),
-  name: "Kiryuu",
-  description: "Extension that pulls manga from Kiryuu",
+  name: "ManhwaIndo",
+  description: "Extension that pulls manga from ManhwaIndo",
   author: "NaufalJCT48",
   authorWebsite: "http://github.com/naufaljct48",
   icon: "icon.png",
   contentRating: ContentRating.MATURE,
-  websiteBaseURL: KIRYUU_DOMAIN,
+  websiteBaseURL: MANHWAINDO_DOMAIN,
   sourceTags: [
     {
       text: "Notifications",
@@ -33,15 +33,15 @@ export const KiryuuInfo: SourceInfo = {
   ],
 };
 
-export class Kiryuu extends MangaStream {
+export class ManhwaIndo extends MangaStream {
   //FOR ALL THE SELECTIONS, PLEASE CHECK THE MangaSteam.ts FILE!!!
 
-  baseUrl: string = KIRYUU_DOMAIN;
+  baseUrl: string = MANHWAINDO_DOMAIN;
   languageCode: LanguageCode = LanguageCode.INDONESIAN;
 
-  override readonly parser: KiryuuParser = new KiryuuParser();
+  override readonly parser: ManhwaIndoParser = new ManhwaIndoParser();
 
-  override sourceTraversalPathName = "manga";
+  override sourceTraversalPathName = "series";
 
   override requestManager = createRequestManager({
     requestsPerSecond: 2,
@@ -97,7 +97,7 @@ export class Kiryuu extends MangaStream {
   override homescreen_LatestUpdate_enabled = true;
   override homescreen_LatestUpdate_selector_box = "h2:contains(Project Update)";
 
-  override homescreen_NewManga_enabled = false;
+  override homescreen_NewManga_enabled = true;
   override homescreen_NewManga_selector = "h2:contains(Rilisan Terbaru)";
 
   override homescreen_TopAllTime_enabled = true;
@@ -119,5 +119,5 @@ export class Kiryuu extends MangaStream {
     tags_selector_label: string = "span"
     */
 
-  override manga_tag_selector_box = ".seriestugenre";
+  // override manga_tag_selector_box = ".seriestugenre";
 }
