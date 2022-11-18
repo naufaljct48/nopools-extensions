@@ -1876,11 +1876,10 @@ class WestManga extends MangaStream_1.MangaStream {
         this.homescreen_PopularToday_selector = "h2:contains(Komik Popular Hari Ini...)";
         this.homescreen_LatestUpdate_enabled = true;
         this.homescreen_LatestUpdate_selector_box = "h2:contains(UPDATE KOMIK LAINYA...)";
-        this.homescreen_NewManga_enabled = true;
-        this.homescreen_NewManga_selector = "h2:contains(UPDATE PROJECT WESTMANGA)";
-        this.homescreen_TopAllTime_enabled = true;
-        this.homescreen_TopMonthly_enabled = true;
-        this.homescreen_TopWeekly_enabled = true;
+        this.homescreen_NewManga_enabled = false;
+        this.homescreen_TopAllTime_enabled = false;
+        this.homescreen_TopMonthly_enabled = false;
+        this.homescreen_TopWeekly_enabled = false;
         /*
           ----TAG SELECTORS
           PRESET 1 (default): Genres are on homepage ex. https://mangagenki.com/
