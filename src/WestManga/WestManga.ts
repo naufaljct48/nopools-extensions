@@ -72,13 +72,11 @@ export class WestManga extends MangaStream {
   override homescreen_LatestUpdate_selector_box =
     "h2:contains(UPDATE KOMIK LAINYA...)";
 
-  override homescreen_NewManga_enabled = true;
-  override homescreen_NewManga_selector =
-    "h2:contains(UPDATE PROJECT WESTMANGA)";
+  override homescreen_NewManga_enabled = false;
 
-  override homescreen_TopAllTime_enabled = true;
-  override homescreen_TopMonthly_enabled = true;
-  override homescreen_TopWeekly_enabled = true;
+  override homescreen_TopAllTime_enabled = false;
+  override homescreen_TopMonthly_enabled = false;
+  override homescreen_TopWeekly_enabled = false;
 
   /*
     ----TAG SELECTORS
