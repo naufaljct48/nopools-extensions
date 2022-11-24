@@ -10,7 +10,7 @@ import { MangaStream, getExportVersion } from "../MangaStream";
 
 import { KomikTapParser } from "./KomikTapParser";
 
-const KOMIKTAP_DOMAIN = "https://194.233.66.232";
+const KOMIKTAP_DOMAIN = "https://komiktap.in";
 
 export const KomikTapInfo: SourceInfo = {
   version: getExportVersion("0.0.1"),
