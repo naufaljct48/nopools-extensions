@@ -986,7 +986,7 @@ exports.KomikTap = exports.KomikTapInfo = void 0;
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const MangaStream_1 = require("../MangaStream");
 const KomikTapParser_1 = require("./KomikTapParser");
-const KOMIKTAP_DOMAIN = "https://komiktap.in";
+const KOMIKTAP_DOMAIN = "https://92.87.6.124";
 exports.KomikTapInfo = {
     version: (0, MangaStream_1.getExportVersion)("0.0.1"),
     name: "KomikTap",
