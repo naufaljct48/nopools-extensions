@@ -10,6 +10,7 @@ Indonesian Sources:
 - Kiryuu
 - Komiku.com
 - KomikTap (18+)
+- Komikcast
 
 ## Current Repo
 
