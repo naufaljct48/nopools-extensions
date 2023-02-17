@@ -1019,31 +1019,6 @@ class Komikcast extends MangaStream_1.MangaStream {
             requestsPerSecond: 2,
             requestTimeout: 15000,
         });
-        this.dateMonths = {
-            january: "januari",
-            february: "februari",
-            march: "maret",
-            april: "april",
-            may: "mei",
-            june: "juni",
-            july: "juli",
-            august: "agustus",
-            september: "september",
-            october: "oktober",
-            november: "november",
-            december: "desember",
-        };
-        this.dateTimeAgo = {
-            now: ["yang lalu"],
-            yesterday: ["kemarin"],
-            years: ["tahun"],
-            months: ["bulan"],
-            weeks: ["minggu"],
-            days: ["hari"],
-            hours: ["jam"],
-            minutes: ["menit"],
-            seconds: ["detik"],
-        };
         //----MANGA DETAILS SELECTORS
         /*
           If a website uses different names/words for the status below, change them to these.
@@ -1061,7 +1036,7 @@ class Komikcast extends MangaStream_1.MangaStream {
         this.homescreen_PopularToday_selector = "span:contains(Hot Komik Update)";
         this.homescreen_LatestUpdate_enabled = true;
         this.homescreen_LatestUpdate_selector_box = "span:contains(Update Projek Komikcast)";
-        this.homescreen_NewManga_enabled = false;
+        this.homescreen_NewManga_enabled = true;
         this.homescreen_NewManga_selector = "span:contains(Rilisan Terbaru)";
         this.homescreen_TopAllTime_enabled = true;
         this.homescreen_TopMonthly_enabled = true;
@@ -1081,6 +1056,7 @@ class Komikcast extends MangaStream_1.MangaStream {
           tags_selector_label: string = "span"
           */
         this.manga_tag_selector_box = "span.komik_info-content-genre a";
+        this.chapter_selector_box = "div.komik_info-chapters";
     }
 }
 exports.Komikcast = Komikcast;
@@ -1298,7 +1274,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
          * Eg. https://mangadark.com/manga/mashle-magic-and-muscles the pathname would be "manga"
          * Default = "manga"
          */
-        this.sourceTraversalPathName = "komik";
+        this.sourceTraversalPathName = "manga";
         /**
          * Fallback image if no image is present
          * Default = "https://i.imgur.com/GYUxEX8.png"
@@ -1331,7 +1307,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
          */
         this.manga_selector_artist = "Artist";
         this.manga_selector_status = "Status";
-        this.manga_tag_selector_box = "span.komik_info-content-genre a";
+        this.manga_tag_selector_box = "span.mgen";
         this.manga_tag_TraversalPathName = "genres";
         /**
          * The selector for the manga status.
@@ -1383,7 +1359,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
          * This box contains all the chapter items
          * Default = "div#chapterlist.eplister"
          */
-        this.chapter_selector_box = "div.komik_info-chapters";
+        this.chapter_selector_box = "div#chapterlist";
         /**
          * The selector for each individual chapter element
          * This is the element for each small box containing the chapter information
