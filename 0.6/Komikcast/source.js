@@ -1012,7 +1012,7 @@ class Komikcast extends MangaStream_1.MangaStream {
         //FOR ALL THE SELECTIONS, PLEASE CHECK THE MangaSteam.ts FILE!!!
         super(...arguments);
         this.baseUrl = KOMIKCAST_DOMAIN;
-        this.languageCode = paperback_extensions_common_1.LanguageCode.INDONESIAN;
+        this.languageCode = paperback_extensions_common_1.LanguageCode.English;
         this.parser = new KomikcastParser_1.KomikcastParser();
         this.sourceTraversalPathName = "komik";
         this.requestManager = createRequestManager({
@@ -1098,6 +1098,61 @@ class KomikcastParser extends MangaStreamParser_1.MangaStreamParser {
             longStrip: false,
         });
         return chapterDetails;
+    }
+    parseChapterList($, mangaId, source) {
+        const chapters = [];
+        let sortingIndex = 0;
+        let langCode = source.languageCode;
+        if (mangaId.toUpperCase().endsWith('-RAW') && source.languageCode == 'gb')
+            langCode = LanguageCode.KOREAN;
+        for (const chapter of $(source.chapter_selector_item, source.chapter_selector_box).toArray()) {
+            const title = $('a.chapter-link-item', chapter).text().trim();
+            const id = this.idCleaner($('a', chapter).attr('href') ?? '');
+            const date = convertDate($('div.chapter-link-time', chapter).text().trim(), source);
+            const getNumber = chapter.attribs['data-num'] ?? '';
+            const chapterNumberRegex = getNumber.match(/(\d+\.?\d?)+/);
+            let chapterNumber = 0;
+            if (chapterNumberRegex && chapterNumberRegex[1])
+                chapterNumber = Number(chapterNumberRegex[1]);
+            if (!id)
+                continue;
+            chapters.push({
+                id: id,
+                mangaId,
+                name: title,
+                langCode: langCode,
+                chapNum: chapterNumber,
+                time: date,
+                // @ts-ignore
+                sortingIndex
+            });
+            sortingIndex--;
+        }
+        return chapters.map(chapter => {
+            // @ts-ignore
+            chapter.sortingIndex += chapters.length;
+            return createChapter(chapter);
+        });
+    }
+    parseSearchResults($, source) {
+        const mangas = [];
+        const collectedIds = [];
+        for (const manga of $('div.list-update_item').toArray()) {
+            const id = this.idCleaner($('a', manga).attr('href') ?? '');
+            const title = $('a', manga).attr('title');
+            const image = this.getImageSrc($('img', manga))?.split('?resize')[0] ?? '';
+            const subtitle = $('div.epxs', manga).text().trim();
+            if (collectedIds.includes(id) || !id || !title)
+                continue;
+            mangas.push(createMangaTile({
+                id,
+                image: image ? image : source.fallbackImage,
+                title: createIconText({ text: this.decodeHTMLEntity(title) }),
+                subtitleText: createIconText({ text: subtitle }),
+            }));
+            collectedIds.push(id);
+        }
+        return mangas;
     }
     parseMangaDetails($, mangaId, source) {
         const titles = [];
