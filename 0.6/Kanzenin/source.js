@@ -1062,9 +1062,7 @@ class Kanzenin extends MangaStream_1.MangaStream {
         //Disabling some of these will cause some Home-Page tests to fail, edit these test files to match the setting.
         //Always be sure to test this in the app!
         this.homescreen_PopularToday_enabled = true;
-        this.homescreen_PopularToday_selector = "h2:contains(Popular Today)";
         this.homescreen_LatestUpdate_enabled = true;
-        this.homescreen_LatestUpdate_selector_box = "h2:contains(Latest Update)";
         this.homescreen_NewManga_enabled = true;
         this.homescreen_TopAllTime_enabled = true;
         this.homescreen_TopMonthly_enabled = true;
@@ -1139,8 +1137,8 @@ class KanzeninParser extends MangaStreamParser_1.MangaStreamParser {
                 continue;
             titles.push(this.decodeHTMLEntity(title.trim()));
         }
-        const author = $("td:contains(Author)+td").contents().last().text().trim(); //Language dependant
-        const artist = $("td:contains(Artist)+td").contents().last().text().trim(); //Language dependant
+        const author = $("span:contains(Author)").contents().last().text().trim(); //Language dependant
+        const artist = $("span:contains(Serialization)").contents().last().text().trim(); //Language dependant
         const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
         const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
         const arrayTags = [];

@@ -1938,7 +1938,7 @@ class MangataleParser extends MangaStreamParser_1.MangaStreamParser {
     }
     parseMangaDetails($, mangaId, source) {
         const titles = [];
-        titles.push(this.decodeHTMLEntity($("h1.entry-title").text().replace("Bahasa Indonesia", "").trim()));
+        titles.push(this.decodeHTMLEntity($("h1.entry-title").text().replace(" Bahasa Indonesia", "").trim()));
         const altTitles = $(`span:contains(${source.manga_selector_AlternativeTitles}), b:contains(${source.manga_selector_AlternativeTitles})+span, .imptdt:contains(${source.manga_selector_AlternativeTitles}) i, h1.entry-title+span`)
             .contents()
             .remove()
@@ -1950,8 +1950,8 @@ class MangataleParser extends MangaStreamParser_1.MangaStreamParser {
                 continue;
             titles.push(this.decodeHTMLEntity(title.trim()));
         }
-        const author = $("td:contains(Author)+td").contents().last().text().trim(); //Language dependant
-        const artist = $("td:contains(Artist)+td").contents().last().text().trim(); //Language dependant
+        const author = $("span:contains(Author)").contents().last().text().trim(); //Language dependant
+        const artist = $("span:contains(Serialization)").contents().last().text().trim(); //Language dependant
         const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
         const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
         const arrayTags = [];
