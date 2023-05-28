@@ -1098,7 +1098,7 @@ class DoujindesuParser extends MangaStreamParser_1.MangaStreamParser {
         this.parseViewMore = ($, source) => {
             const mangas = [];
             const collectedIds = [];
-            for (const manga of $('div.entries', '.entry').toArray()) {
+            for (const manga of $('div.entries', 'article.entry').toArray()) {
                 const id = this.idCleaner($('a', manga).attr('href') ?? '');
                 const title = $('a', manga).attr('title');
                 const image = this.getImageSrc($('img', manga))?.split('?resize')[0] ?? '';
@@ -1148,8 +1148,8 @@ class DoujindesuParser extends MangaStreamParser_1.MangaStreamParser {
     }
     parseMangaDetails($, mangaId, source) {
         const titles = [];
-        titles.push(this.decodeHTMLEntity($("h1.title").text().replace("", "").trim()));
-        const altTitles = $(`span:contains(${source.manga_selector_AlternativeTitles}), b:contains(${source.manga_selector_AlternativeTitles})+span, .imptdt:contains(${source.manga_selector_AlternativeTitles}) i, h1.entry-title+span`)
+        titles.push(this.decodeHTMLEntity($("h1.title").text().trim()));
+        const altTitles = $(`span:contains(${source.manga_selector_AlternativeTitles}), b:contains(${source.manga_selector_AlternativeTitles})+span, .imptdt:contains(${source.manga_selector_AlternativeTitles}) i, h1article.entry-title+span`)
             .contents()
             .remove()
             .last()
@@ -1162,7 +1162,7 @@ class DoujindesuParser extends MangaStreamParser_1.MangaStreamParser {
         }
         const author = $("td:contains(Author)+td").contents().last().text().trim(); //Language dependant
         const artist = $("td:contains(Group)+td").contents().last().text().trim(); //Language dependant
-        const image = this.getImageSrc($("img", 'div[itemprop="image"]', '.thumb img', '.thumbnail img'));
+        const image = this.getImageSrc($("img", 'div[itemprop="image"]', ".thumb img", ".thumbnail img"));
         const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
         const arrayTags = [];
         for (const tag of $(".tags a", source.manga_tag_selector_box).toArray()) {
@@ -1249,7 +1249,7 @@ class DoujindesuParser extends MangaStreamParser_1.MangaStreamParser {
     parseSearchResults($, source) {
         const mangas = [];
         const collectedIds = [];
-        for (const manga of $('div.entries', '.entry').toArray()) {
+        for (const manga of $('div.entries', 'article.entry').toArray()) {
             const id = this.idCleaner($('a', manga).attr('href') ?? '');
             const title = $('a', manga).attr('title');
             const image = this.getImageSrc($('img', manga))?.split('?resize')[0] ?? '';
@@ -1271,11 +1271,11 @@ class DoujindesuParser extends MangaStreamParser_1.MangaStreamParser {
             //Popular Today
             if (section.id == 'popular_today') {
                 const popularToday = [];
-                if (!$('div.entries', '.entry', $(source.homescreen_PopularToday_selector)?.parent()?.next()).length) {
+                if (!$('div.entries', 'article.entry', $(source.homescreen_PopularToday_selector)?.parent()?.next()).length) {
                     console.log('Unable to parse valid Popular Today section!');
                     continue;
                 }
-                for (const manga of $('div.entries', '.entry', $(source.homescreen_PopularToday_selector).parent().next()).toArray()) {
+                for (const manga of $('div.entries', 'article.entry', $(source.homescreen_PopularToday_selector).parent().next()).toArray()) {
                     const id = this.idCleaner($('a', manga).attr('href') ?? '');
                     const title = $('a', manga).attr('title');
                     const image = this.getImageSrc($('img', manga))?.split('?resize')[0] ?? '';
