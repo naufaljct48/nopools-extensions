@@ -986,7 +986,7 @@ exports.Doujindesu = exports.DoujindesuInfo = void 0;
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const MangaStream_1 = require("../MangaStream");
 const DoujindesuParser_1 = require("./DoujindesuParser");
-const DOUJINDESU_DOMAIN = "https://doujindesu.xxx";
+const DOUJINDESU_DOMAIN = "https://212.32.226.234/";
 exports.DoujindesuInfo = {
     version: (0, MangaStream_1.getExportVersion)("0.0.1"),
     name: "Doujindesu",
