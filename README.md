@@ -19,4 +19,5 @@ Indonesian Paperback Sources:
 
 | Source Type  | Description                                   | Link                                                               |
 | ------------ | --------------------------------------------- | ------------------------------------------------------------------ |
-| Stable (0.6) | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
+| Mangastream  | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
+|     Madara   | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/madara-extensions/madara/) |
