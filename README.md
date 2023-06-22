@@ -9,15 +9,16 @@ Indonesian Paperback Sources:
 
 - Kanzenin (18+)
 - Kiryuu
+- Komikcast
 - KomikIndo
 - KomikTap (18+)
 - Komiku.com
 - Mangatale.co
 - WestManga
+- Shinigami
 
 ## Current Repo
 
 | Source Type  | Description                                   | Link                                                               |
 | ------------ | --------------------------------------------- | ------------------------------------------------------------------ |
-| Mangastream  | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
-|     Madara   | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/madara-extensions/madara/) |
+| Indonesian   | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
