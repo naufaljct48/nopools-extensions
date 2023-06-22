@@ -1108,13 +1108,13 @@ class WestMangaMain extends paperback_extensions_common_1.Source {
         this.dateTimeAgo = {
             now: ['less than an hour', 'just now'],
             yesterday: ['yesterday'],
-            years: ['years'],
-            months: ['months'],
+            years: ['year'],
+            months: ['month'],
             weeks: ['weeks'],
-            days: ['days'],
-            hours: ['hours'],
-            minutes: ['minutes'],
-            seconds: ['seconds'],
+            days: ['day'],
+            hours: ['hour'],
+            minutes: ['min'],
+            seconds: ['second']
         };
         //----CHAPTER SELECTORS----
         /**
