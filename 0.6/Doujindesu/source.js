@@ -1058,7 +1058,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
          * Leave default if not used!
          * Default = "b:contains(Alternative Titles)"
         */
-        this.manga_selector_AlternativeTitles = 'Alternative Titles';
+        this.manga_selector_AlternativeTitles = '';
         /**
          * The selector for authors.
          * This can change depending on the language
@@ -1475,7 +1475,7 @@ class DoujindesuMainParser {
         if (mangaId.toUpperCase().endsWith('-RAW') && source.languageCode == 'gb')
             langCode = paperback_extensions_common_1.LanguageCode.KOREAN;
         for (const chapter of $(source.chapter_selector_item, source.chapter_selector_box).toArray()) {
-            const title = $('span.eps', chapter).text().trim();
+            const title = $('span.eps a', chapter).text().trim();
             const id = this.idCleaner((_a = $('a', chapter).attr('href')) !== null && _a !== void 0 ? _a : '', source);
             const date = LanguageUtils_1.convertDate($('span.date', chapter).text().trim(), source);
             const getNumber = (_b = chapter.attribs['data-num']) !== null && _b !== void 0 ? _b : '';
