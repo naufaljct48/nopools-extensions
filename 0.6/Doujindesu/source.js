@@ -1238,7 +1238,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
     getTags() {
         return __awaiter(this, void 0, void 0, function* () {
             const request = createRequestObject({
-                url: `${this.baseUrl}/manga`,
+                url: `${this.baseUrl}/manga/`,
                 method: 'GET',
                 //param: this.tags_SubdirectoryPathName
             });
@@ -1742,7 +1742,7 @@ class DoujindesuMainParser {
         str = str.replace(/(https:\/\/|http:\/\/)/, '');
         str = str.replace(/\/$/, '');
         str = str.replace(`${base}/`, '');
-        str = str.replace(`${source.sourceTraversalPathName}`, '');
+        str = str.replace(`${source.sourceTraversalPathName}/`, '');
         return str;
     }
 }
