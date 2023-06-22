@@ -1003,8 +1003,8 @@ class Doujindesu extends DoujindesuMain_1.DoujindesuMain {
         tags_selector_label: string = "span"
         */
         this.tags_SubdirectoryPathName = '';
-        this.tags_selector_box = 'div.tags';
-        this.tags_selector_item = '';
+        this.tags_selector_box = 'div.tags a';
+        this.tags_selector_item = 'li';
         this.tags_selector_label = '';
     }
 }
@@ -1110,7 +1110,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
          * Default =  English Translation
          */
         this.dateTimeAgo = {
-            now: ['NEW'],
+            now: ['now', 'new'],
             yesterday: ['kmr'],
             years: ['thn'],
             months: ['bln'],
@@ -1339,13 +1339,13 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
             let param = '';
             switch (homepageSectionId) {
                 case 'new_titles':
-                    param = `${this.sourceTraversalPathName}/page/${page}/?&order=latest`;
+                    param = `${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=latest`;
                     break;
                 case 'latest_update':
-                    param = `${this.sourceTraversalPathName}/page/${page}/?&order=update`;
+                    param = `${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=update`;
                     break;
                 case 'popular_today':
-                    param = `${this.sourceTraversalPathName}/page/${page}/?&order=popular`;
+                    param = `${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=popular`;
                     break;
                 default:
                     throw new Error(`Invalid homeSectionId | ${homepageSectionId}`);
@@ -1430,10 +1430,10 @@ class DoujindesuMainParser {
         const titles = [];
         titles.push(this.decodeHTMLEntity($('h1.title').text().trim().replace(' Bahasa Indonesia', '')));
         // const altTitles = $(`span.alter`).text(); //Language dependant
-        const author = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Author) + td:nth-child(2) > a`).text(); //Language dependant
-        const artist = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Character) + td:nth-child(2) > a`).text(); //Language dependant
-        const image = this.getImageSrc($('figure.thumbnail img').attr('src'));
-        const description = this.decodeHTMLEntity($('section.metadata > div.pb-2 > p:nth-child(1)').text().trim());
+        const author = $(`span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, td:contains(${source.manga_selector_author})+td, .imptdt:contains(${source.manga_selector_author}) i`).contents().remove().last().text().trim(); //Language dependant
+        const artist = $(`span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, td:contains(${source.manga_selector_artist})+td, .imptdt:contains(${source.manga_selector_artist}) i`).contents().remove().last().text().trim(); //Language dependant
+        const image = this.getImageSrc($('img', '.thumbnail img').attr('src'));
+        const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
         const arrayTags = [];
         for (const tag of $('a', source.manga_tag_selector_box).toArray()) {
             const label = $(tag).text().trim();
@@ -1443,7 +1443,7 @@ class DoujindesuMainParser {
             arrayTags.push({ id: id, label: label });
         }
         const tagSections = [createTagSection({ id: '0', label: 'genres', tags: arrayTags.map(x => createTag(x)) })];
-        const rawStatus = $(`section.metadata > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(2) > a`).contents().remove().last().text().trim();
+        const rawStatus = $(`span:contains(${source.manga_selector_status}), .fmed b:contains(${source.manga_selector_status})+span, .imptdt:contains(${source.manga_selector_status}) i`).contents().remove().last().text().trim();
         let status = paperback_extensions_common_1.MangaStatus.ONGOING;
         switch (rawStatus.toLowerCase()) {
             case source.manga_StatusTypes.ONGOING.toLowerCase():
@@ -1500,7 +1500,7 @@ class DoujindesuMainParser {
         //const data = $.html()
         var _a, _b;
         const pages = [];
-        for (const p of $('img', '#reader>.main img', '#reader > div.main > div > img').toArray()) {
+        for (const p of $('img', '#reader>.main img').toArray()) {
             let image = (_a = $(p).attr('src')) !== null && _a !== void 0 ? _a : '';
             if (!image)
                 image = (_b = $(p).attr('data-src')) !== null && _b !== void 0 ? _b : '';
@@ -1711,27 +1711,28 @@ class DoujindesuMainParser {
         }
     }
     getImageSrc(imageObj) {
+        var _a, _b, _c;
         let image;
-        const src = imageObj?.attr('src');
-        const dataLazy = imageObj?.attr('data-lazy-src');
-        const srcset = imageObj?.attr('srcset');
-        const dataSRC = imageObj?.attr('data-src');
-        if ((typeof src != 'undefined') && !src?.startsWith('data')) {
-            image = imageObj?.attr('src');
+        const src = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('src');
+        const dataLazy = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-lazy-src');
+        const srcset = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('srcset');
+        const dataSRC = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
+        if ((typeof src != 'undefined') && !(src === null || src === void 0 ? void 0 : src.startsWith('data'))) {
+            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('src');
         }
-        else if ((typeof dataLazy != 'undefined') && !dataLazy?.startsWith('data')) {
-            image = imageObj?.attr('data-lazy-src');
+        else if ((typeof dataLazy != 'undefined') && !(dataLazy === null || dataLazy === void 0 ? void 0 : dataLazy.startsWith('data'))) {
+            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-lazy-src');
         }
-        else if ((typeof srcset != 'undefined') && !srcset?.startsWith('data')) {
-            image = imageObj?.attr('srcset')?.split(' ')[0] ?? '';
+        else if ((typeof srcset != 'undefined') && !(srcset === null || srcset === void 0 ? void 0 : srcset.startsWith('data'))) {
+            image = (_b = (_a = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('srcset')) === null || _a === void 0 ? void 0 : _a.split(' ')[0]) !== null && _b !== void 0 ? _b : '';
         }
-        else if ((typeof dataSRC != 'undefined') && !dataSRC?.startsWith('data')) {
-            image = imageObj?.attr('data-src');
+        else if ((typeof dataSRC != 'undefined') && !(dataSRC === null || dataSRC === void 0 ? void 0 : dataSRC.startsWith('data'))) {
+            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
         }
         else {
             image = 'https://i.imgur.com/GYUxEX8.png';
         }
-        return encodeURI(decodeURI(this.decodeHTMLEntity(image?.trim() ?? '')));
+        return encodeURI(decodeURI(this.decodeHTMLEntity((_c = image === null || image === void 0 ? void 0 : image.trim()) !== null && _c !== void 0 ? _c : '')));
     }
     decodeHTMLEntity(str) {
         return entities.decodeHTML(str);
