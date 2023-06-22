@@ -1279,7 +1279,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
         const request = createRequestObject({
             url: `${this.baseUrl}/`,
             method: "GET",
-            param: this.tags_SubdirectoryPathName,
+            // param: this.tags_SubdirectoryPathName,
         });
         const response = await this.requestManager.schedule(request, 1);
         this.CloudFlareError(response.status);
@@ -1953,14 +1953,23 @@ class WestMangaParser extends MangaStreamParser_1.MangaStreamParser {
         const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
         const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
         const arrayTags = [];
-        for (const tag of $('a', source.manga_tag_selector_box).toArray()) {
+        for (const tag of $("a", source.manga_tag_selector_box).toArray()) {
             const label = $(tag).text().trim();
-            const id = encodeURI((_b = (_a = $(tag).attr('href')) === null || _a === void 0 ? void 0 : _a.replace(`${source.baseUrl}/${source.manga_tag_TraversalPathName}/`, '').replace(/\//g, '')) !== null && _b !== void 0 ? _b : '');
+            const id = encodeURI($(tag)
+                .attr("href")
+                ?.replace(`${source.baseUrl}/${source.manga_tag_TraversalPathName}/`, "")
+                .replace(/\//g, "") ?? "");
             if (!id || !label)
                 continue;
             arrayTags.push({ id: id, label: label });
         }
-        const tagSections = [createTagSection({ id: '0', label: 'genres', tags: arrayTags.map(x => createTag(x)) })];
+        const tagSections = [
+            createTagSection({
+                id: "0",
+                label: "genres",
+                tags: arrayTags.map((x) => createTag(x)),
+            }),
+        ];
         const rawStatus = $(`span:contains(${source.manga_selector_status}), .fmed b:contains(${source.manga_selector_status})+span, .imptdt:contains(${source.manga_selector_status}) i`)
             .contents()
             .remove()
