@@ -423,17 +423,16 @@ exports.default = new Uint16Array(
     
     },{}],7:[function(require,module,exports){
     "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-// Generated using scripts/write-decode-map.ts
-// prettier-ignore
-exports.default = new Uint16Array(
-// prettier-ignore
-"\u0200aglq\t\x15\x18\x1b\u026d\x0f\0\0\x12p;\u4026os;\u4027t;\u403et;\u403cuot;\u4022"
-    .split("")
-    .map(function (c) { return c.charCodeAt(0); }));
-
-},{}],8:[function(require,module,exports){
-"use strict";
+    // Generated using scripts/write-decode-map.ts
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = new Uint16Array(
+    // prettier-ignore
+    "\u0200aglq\t\x15\x18\x1b\u026d\x0f\0\0\x12p;\u4026os;\u4027t;\u403et;\u403cuot;\u4022"
+        .split("")
+        .map(function (c) { return c.charCodeAt(0); }));
+    
+    },{}],8:[function(require,module,exports){
+    "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.decodeXMLStrict = exports.decodeHTML5Strict = exports.decodeHTML4Strict = exports.decodeHTML5 = exports.decodeHTML4 = exports.decodeHTMLStrict = exports.decodeHTML = exports.decodeXML = exports.encodeHTML5 = exports.encodeHTML4 = exports.escapeUTF8 = exports.escape = exports.encodeNonAsciiHTML = exports.encodeHTML = exports.encodeXML = exports.encode = exports.decodeStrict = exports.decode = exports.EncodingMode = exports.DecodingMode = exports.EntityLevel = void 0;
 var decode_1 = require("./decode");
