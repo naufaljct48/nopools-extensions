@@ -1589,8 +1589,8 @@ class MangaStreamParser {
     }
     parseTags($, source) {
         const arrayTags = [];
-        for (const tag of $(source.tags_selector_item, source.tags_selector_box).toArray()) {
-            const label = source.tags_selector_label ? $(source.tags_selector_label, tag).text().trim() : $(tag).text().trim();
+        for (const tag of $('.genrez li label').toArray()) {
+            const label = $('.genrez li label').text().trim();
             const id = encodeURI($('a', tag).attr('href')?.replace(`${source.baseUrl}/genres/`, '').replace(/\//g, '') ?? '');
             if (!id || !label)
                 continue;

@@ -1589,7 +1589,7 @@ class MangaStreamParser {
     }
     parseTags($, source) {
         const arrayTags = [];
-        for (const tag of $(source.tags_selector_item, source.tags_selector_box).toArray()) {
+        for (const tag of $('.genrez li label').toArray()) {
             const label = source.tags_selector_label ? $(source.tags_selector_label, tag).text().trim() : $(tag).text().trim();
             const id = encodeURI($('a', tag).attr('href')?.replace(`${source.baseUrl}/genres/`, '').replace(/\//g, '') ?? '');
             if (!id || !label)
@@ -1894,6 +1894,10 @@ class Mangatale extends MangaStream_1.MangaStream {
           tags_selector_item: string = "li"
           tags_selector_label: string = "span"
           */
+          this.tags_SubdirectoryPathName = '';
+          this.tags_selector_box = 'ul.genre';
+          this.tags_selector_item = 'li';
+          this.tags_selector_label = '';
     }
 }
 exports.Mangatale = Mangatale;
