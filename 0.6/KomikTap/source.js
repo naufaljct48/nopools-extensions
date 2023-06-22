@@ -1804,16 +1804,13 @@ class MangaStreamParser {
         return chapterDetails;
     }
     parseTags($, source) {
-        const arrayTags = [];
-        for (const tag of $('.genrez li label').toArray()) {
-            const label = $('.genrez li label').text().trim();
-            const id = encodeURI($('a', tag).attr('href')?.replace(`${source.baseUrl}/genres/`, '').replace(/\//g, '') ?? '');
-            if (!id || !label)
-                continue;
-            arrayTags.push({ id: id, label: label });
+        let genres = [];
+        for (let obj of $('.genrez li label').toArray()) {
+            let label = $(obj).text().trim();
+            let id = label.replace(' ', '-');
+            genres.push(createTag({ label: label, id: id }));
         }
-        const tagSections = [createTagSection({ id: '0', label: 'genres', tags: arrayTags.map(x => createTag(x)) })];
-        return tagSections;
+        return [createTagSection({ id: '0', label: 'genres', tags: genres })];
     }
     parseSearchResults($, source) {
         const mangas = [];
