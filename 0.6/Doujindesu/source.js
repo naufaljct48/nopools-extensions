@@ -1099,7 +1099,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
             june: 'Juni',
             july: 'Juli',
             august: 'Agustus',
-            september: 'September',
+            september: 'Sep',
             october: 'Oktober',
             november: 'November',
             december: 'Desember'
@@ -1111,14 +1111,14 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
          */
         this.dateTimeAgo = {
             now: ['less than an hour', 'just now'],
-            yesterday: ['kemarin'],
-            years: ['tahun'],
-            months: ['bulan'],
-            weeks: ['minggu'],
-            days: ['hari'],
-            hours: ['jam'],
-            minutes: ['menit'],
-            seconds: ['detik']
+            yesterday: ['Kemarin'],
+            years: ['Tahun'],
+            months: ['Bulan'],
+            weeks: ['Minggu'],
+            days: ['Hari'],
+            hours: ['Jam'],
+            minutes: ['Menit'],
+            seconds: ['Detik']
         };
         //----CHAPTER SELECTORS----
         /**
