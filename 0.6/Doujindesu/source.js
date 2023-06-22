@@ -1110,7 +1110,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
          * Default =  English Translation
          */
         this.dateTimeAgo = {
-            now: ['less than an hour', 'just now', 'NOW'],
+            now: ['less than an hour', 'just now', 'NEW'],
             yesterday: ['kmr'],
             years: ['thn'],
             months: ['bln'],
