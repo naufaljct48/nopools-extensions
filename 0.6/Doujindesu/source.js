@@ -1339,13 +1339,13 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
             let param = '';
             switch (homepageSectionId) {
                 case 'new_titles':
-                    param = `${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=latest`;
+                    param = `/${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=latest`;
                     break;
                 case 'latest_update':
-                    param = `${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=update`;
+                    param = `/${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=update`;
                     break;
                 case 'popular_today':
-                    param = `${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=popular`;
+                    param = `/${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=popular`;
                     break;
                 default:
                     throw new Error(`Invalid homeSectionId | ${homepageSectionId}`);
@@ -1518,7 +1518,7 @@ class DoujindesuMainParser {
     }
     parseTags($, source) {
         let genres = [];
-        for (let obj of $('.lbx .genx input').toArray()) {
+        for (let obj of $('.lbx label').toArray()) {
             let label = $(obj).text().trim();
             let id = label.replace(' ', '-');
             genres.push(createTag({ label: label, id: id }));
