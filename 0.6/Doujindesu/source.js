@@ -1111,14 +1111,14 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
          */
         this.dateTimeAgo = {
             now: ['less than an hour', 'just now'],
-            yesterday: ['Kemarin'],
-            years: ['Tahun'],
-            months: ['Bulan'],
-            weeks: ['Minggu'],
-            days: ['Hari'],
-            hours: ['Jam'],
-            minutes: ['Menit'],
-            seconds: ['Detik']
+            yesterday: ['kemarin'],
+            years: ['tahun'],
+            months: ['bulan'],
+            weeks: ['minggu'],
+            days: ['hari'],
+            hours: ['jam'],
+            minutes: ['menit'],
+            seconds: ['detik']
         };
         //----CHAPTER SELECTORS----
         /**
@@ -1432,7 +1432,7 @@ class DoujindesuMainParser {
         // const altTitles = $(`span.alter`).text(); //Language dependant
         const author = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Author) + td:nth-child(2) > a`).contents().remove().last().text().trim(); //Language dependant
         const artist = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Character) + td:nth-child(2) > a`).contents().remove().last().text().trim(); //Language dependant
-        const image = this.getImageSrc($('figure.thumbnail > img').attr('src'));
+        const image = this.getImageSrc($('a > figure.thumbnail > img').attr('src'));
         const description = this.decodeHTMLEntity($('section.metadata > div.pb-2 > p:nth-child(1)').text().trim());
         const arrayTags = [];
         for (const tag of $('a', source.manga_tag_selector_box).toArray()) {
