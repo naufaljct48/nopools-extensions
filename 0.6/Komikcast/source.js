@@ -928,20 +928,20 @@ __exportStar(require("./RawData"), exports);
 },{"./Chapter":16,"./ChapterDetails":15,"./Constants":17,"./DynamicUI":33,"./HomeSection":34,"./Languages":35,"./Manga":38,"./MangaTile":36,"./MangaUpdate":37,"./PagedResults":39,"./RawData":40,"./RequestHeaders":41,"./RequestInterceptor":42,"./RequestManager":43,"./RequestObject":44,"./ResponseObject":45,"./SearchField":46,"./SearchRequest":47,"./SourceInfo":48,"./SourceManga":49,"./SourceStateManager":50,"./SourceTag":51,"./TagSection":52,"./TrackedManga":54,"./TrackedMangaChapterReadAction":53,"./TrackerActionQueue":55}],57:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Kiryuu = exports.KiryuuInfo = void 0;
+exports.Komikcast = exports.KomikcastInfo = void 0;
 /* eslint-disable linebreak-style */
 const paperback_extensions_common_1 = require("paperback-extensions-common");
-const KiryuuMain_1 = require("../Kiryuu/KiryuuMain");
-const KIRYUU_DOMAIN = 'https://kiryuu.id';
-exports.KiryuuInfo = {
-    version: KiryuuMain_1.getExportVersion('0.0.0'),
-    name: 'Kiryuu',
-    description: 'Extension that pulls manga from Kiryuu',
-    author: 'heznetcom',
-    authorWebsite: 'https://github.com/heznetcom',
+const KomikcastMain_1 = require("./KomikcastMain");
+const KOMIKCAST_DOMAIN = 'https://komikcast.io';
+exports.KomikcastInfo = {
+    version: KomikcastMain_1.getExportVersion('0.0.0'),
+    name: 'Komikcast',
+    description: 'Extension that pulls manga from Komikcast',
+    author: 'NaufalJCT48',
+    authorWebsite: 'https://github.com/naufaljct48',
     icon: 'icon.png',
     contentRating: paperback_extensions_common_1.ContentRating.MATURE,
-    websiteBaseURL: KIRYUU_DOMAIN,
+    websiteBaseURL: KOMIKCAST_DOMAIN,
     sourceTags: [
         {
             text: 'Notifications',
@@ -950,14 +950,18 @@ exports.KiryuuInfo = {
         {
             text: 'Indonesia',
             type: paperback_extensions_common_1.TagType.GREY
+        },
+        {
+            text: 'CloudFlare',
+            type: paperback_extensions_common_1.TagType.RED
         }
     ]
 };
-class Kiryuu extends KiryuuMain_1.KiryuuMain {
+class Komikcast extends KomikcastMain_1.KomikcastMain {
     constructor() {
         //FOR ALL THE SELECTIONS, PLEASE CHECK THE MangaSteam.ts FILE!!!
         super(...arguments);
-        this.baseUrl = KIRYUU_DOMAIN;
+        this.baseUrl = KOMIKCAST_DOMAIN;
         this.languageCode = paperback_extensions_common_1.LanguageCode.INDONESIAN;
         //----MANGA DETAILS SELECTORS
         /*
@@ -970,13 +974,14 @@ class Kiryuu extends KiryuuMain_1.KiryuuMain {
         //    COMPLETED: "completed"
         //}
         //----HOMESCREEN SELECTORS
-        //Disabling some of these will cause some Home-Page tests to fail, be sure to test this in the app!
+        //Disabling some of these will cause some Home-Page tests to fail, edit these test files to match the setting.
+        //Always be sure to test this in the app!
         this.homescreen_PopularToday_enabled = true;
         this.homescreen_LatestUpdate_enabled = true;
-        this.homescreen_NewManga_enabled = true;
-        this.homescreen_TopAllTime_enabled = true;
-        this.homescreen_TopMonthly_enabled = true;
-        this.homescreen_TopWeekly_enabled = true;
+        this.homescreen_NewManga_enabled = false;
+        this.homescreen_TopAllTime_enabled = false;
+        this.homescreen_TopMonthly_enabled = false;
+        this.homescreen_TopWeekly_enabled = false;
         /*
         ----TAG SELECTORS
         PRESET 1 (default): Genres are on homepage ex. https://mangagenki.com/
@@ -991,15 +996,11 @@ class Kiryuu extends KiryuuMain_1.KiryuuMain {
         tags_selector_item: string = "li"
         tags_selector_label: string = "span"
         */
-        this.tags_SubdirectoryPathName = '';
-        this.tags_selector_box = 'ul.genre';
-        this.tags_selector_item = 'li';
-        this.tags_selector_label = '';
     }
 }
-exports.Kiryuu = Kiryuu;
+exports.Komikcast = Komikcast;
 
-},{"../Kiryuu/KiryuuMain":58,"paperback-extensions-common":14}],58:[function(require,module,exports){
+},{"./KomikcastMain":58,"paperback-extensions-common":14}],58:[function(require,module,exports){
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -1011,17 +1012,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KiryuuMain = exports.getExportVersion = void 0;
+exports.KomikcastMain = exports.getExportVersion = void 0;
 /* eslint-disable linebreak-style */
 const paperback_extensions_common_1 = require("paperback-extensions-common");
-const KiryuuMainParser_1 = require("../Kiryuu/KiryuuMainParser");
+const KomikcastMainParser_1 = require("./KomikcastMainParser");
 // Set the version for the base, changing this version will change the versions of all sources
-const BASE_VERSION = '1.0.2';
+const BASE_VERSION = '1.0.7';
 const getExportVersion = (EXTENSION_VERSION) => {
     return BASE_VERSION.split('.').map((x, index) => Number(x) + Number(EXTENSION_VERSION.split('.')[index])).join('.');
 };
 exports.getExportVersion = getExportVersion;
-class KiryuuMain extends paperback_extensions_common_1.Source {
+class KomikcastMain extends paperback_extensions_common_1.Source {
     constructor() {
         super(...arguments);
         /**
@@ -1031,10 +1032,16 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
         //----GENERAL SELECTORS----
         /**
          * The pathname between the domain and the manga.
-         * Eg. https://mangadark.com/manga/mashle-magic-and-muscles the pathname would be "manga"
-         * Default = "manga"
+         * Eg. https://komikcast.com/komik/one-piece/ the pathname would be "komik"
+         * Default = "komik"
          */
-        this.sourceTraversalPathName = 'manga';
+        this.sourceTraversalPathName = 'komik';
+        /**
+         * The pathname between the domain and the chapter.
+         * Eg. https://komikcast.com/chapter/one-piece-chapter-1046-5-bahasa-indonesia/ the pathname would be "chapter"
+         * Default = "chapter"
+         */
+        this.sourceChapterTraversalPathName = 'chapter';
         /**
          * Fallback image if no image is present
          * Default = "https://i.imgur.com/GYUxEX8.png"
@@ -1047,14 +1054,14 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
          * Leave default if not used!
          * Default = "b:contains(Alternative Titles)"
         */
-        this.manga_selector_AlternativeTitles = 'Alternative Titles';
+        this.manga_selector_AlternativeTitles = 'Judul Alternatif';
         /**
          * The selector for authors.
          * This can change depending on the language
          * Leave default if not used!
          * Default = "Author" (English)
         */
-        this.manga_selector_author = 'Author';
+        this.manga_selector_author = 'Author:';
         /**
          * The selector for artists.
          * This can change depending on the language
@@ -1062,8 +1069,8 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
          * Default = "Artist" (English)
         */
         this.manga_selector_artist = 'Artist';
-        this.manga_selector_status = 'Status';
-        this.manga_tag_selector_box = 'div.seriestugenre';
+        this.manga_selector_status = 'Status:';
+        this.manga_tag_selector_box = 'span.komik_info-content-genre';
         this.manga_tag_TraversalPathName = 'genres';
         /**
          * The selector for the manga status.
@@ -1080,18 +1087,18 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
          * Default = English Translation
          */
         this.dateMonths = {
-            january: 'Januari',
-            february: 'Februari',
-            march: 'Maret',
+            january: 'January',
+            february: 'February',
+            march: 'March',
             april: 'April',
-            may: 'Mei',
-            june: 'Juni',
-            july: 'Juli',
-            august: 'Agustus',
+            may: 'May',
+            june: 'June',
+            july: 'July',
+            august: 'August',
             september: 'September',
-            october: 'Oktober',
+            october: 'October',
             november: 'November',
-            december: 'Desember'
+            december: 'December'
         };
         /**
          * In this object, add the site's translations for the following time formats, case insensitive.
@@ -1100,14 +1107,14 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
          */
         this.dateTimeAgo = {
             now: ['less than an hour', 'just now'],
-            yesterday: ['kemarin'],
-            years: ['tahun'],
-            months: ['bulan'],
-            weeks: ['minggu'],
-            days: ['hari'],
-            hours: ['jam'],
-            minutes: ['menit'],
-            seconds: ['detik']
+            yesterday: ['yesterday'],
+            years: ['year'],
+            months: ['month'],
+            weeks: ['weeks'],
+            days: ['day'],
+            hours: ['hour'],
+            minutes: ['min'],
+            seconds: ['second']
         };
         //----CHAPTER SELECTORS----
         /**
@@ -1115,7 +1122,7 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
          * This box contains all the chapter items
          * Default = "div#chapterlist.eplister"
         */
-        this.chapter_selector_box = 'div#chapterlist';
+        this.chapter_selector_box = 'div.komik_info-chapters';
         /**
          * The selector for each individual chapter element
          * This is the element for each small box containing the chapter information
@@ -1153,17 +1160,17 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
          * Selector Default = "h2:contains(Popular Today)"
         */
         this.homescreen_PopularToday_enabled = true;
-        this.homescreen_PopularToday_selector = 'h2:contains(Terpopuler Hari Ini)';
+        this.homescreen_PopularToday_selector = 'h3:contains(Hot Komik Update)';
         this.homescreen_LatestUpdate_enabled = true;
-        this.homescreen_LatestUpdate_selector_box = 'h2:contains(Rilisan Terbaru)';
-        this.homescreen_LatestUpdate_selector_item = 'div.uta';
-        this.homescreen_NewManga_enabled = true;
-        this.homescreen_NewManga_selector = 'h3:contains(Serial baru)';
-        this.homescreen_TopAllTime_enabled = true;
+        this.homescreen_LatestUpdate_selector_box = 'h3:contains(Rilisan Terbaru)';
+        this.homescreen_LatestUpdate_selector_item = 'div.utao';
+        this.homescreen_NewManga_enabled = false;
+        this.homescreen_NewManga_selector = 'h3:contains(New Series)';
+        this.homescreen_TopAllTime_enabled = false;
         this.homescreen_TopAllTime_selector = 'div.serieslist.pop.wpop.wpop-alltime';
-        this.homescreen_TopMonthly_enabled = true;
+        this.homescreen_TopMonthly_enabled = false;
         this.homescreen_TopMonthly_selector = 'div.serieslist.pop.wpop.wpop-monthly';
-        this.homescreen_TopWeekly_enabled = true;
+        this.homescreen_TopWeekly_enabled = false;
         this.homescreen_TopWeekly_selector = 'div.serieslist.pop.wpop.wpop-weekly';
         //----REQUEST MANAGER----
         this.requestManager = createRequestManager({
@@ -1183,7 +1190,7 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
                 })
             }
         });
-        this.parser = new KiryuuMainParser_1.KiryuuMainParser();
+        this.parser = new KomikcastMainParser_1.KomikcastMainParser();
     }
     getMangaShareUrl(mangaId) {
         return `${this.baseUrl}/${this.sourceTraversalPathName}/${mangaId}/`;
@@ -1215,7 +1222,7 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
     getChapterDetails(mangaId, chapterId) {
         return __awaiter(this, void 0, void 0, function* () {
             const request = createRequestObject({
-                url: `${this.baseUrl}/${chapterId}/`,
+                url: `${this.baseUrl}/${this.sourceChapterTraversalPathName}/${chapterId}/`,
                 method: 'GET'
             });
             const response = yield this.requestManager.schedule(request, 1);
@@ -1227,9 +1234,9 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
     getTags() {
         return __awaiter(this, void 0, void 0, function* () {
             const request = createRequestObject({
-                url: `${this.baseUrl}/manga/`,
+                url: `${this.baseUrl}/`,
                 method: 'GET',
-                //param: this.tags_SubdirectoryPathName
+                param: this.tags_SubdirectoryPathName
             });
             const response = yield this.requestManager.schedule(request, 1);
             this.CloudFlareError(response.status);
@@ -1244,9 +1251,9 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
             let request;
             if (query.title) {
                 request = createRequestObject({
-                    url: `${this.baseUrl}/page/${page}/?s=`,
+                    url: `${this.baseUrl}/`,
                     method: 'GET',
-                    param: encodeURI(query.title)
+                    param: `search/${encodeURI(query.title)}/page/${page}`
                 });
             }
             else {
@@ -1276,7 +1283,7 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
             };
             while (updatedManga.loadMore) {
                 const request = createRequestObject({
-                    url: `${this.baseUrl}/page/${page++}/`,
+                    url: `${this.baseUrl}/daftar-komik/page/${page++}/?sortby=update`,
                     method: 'GET'
                 });
                 const response = yield this.requestManager.schedule(request, 1);
@@ -1292,7 +1299,7 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
     }
     getHomePageSections(sectionCallback) {
         return __awaiter(this, void 0, void 0, function* () {
-            const section1 = createHomeSection({ id: 'popular_today', title: 'Popular Today', view_more: false });
+            const section1 = createHomeSection({ id: 'popular_today', title: 'Popular', view_more: true });
             const section2 = createHomeSection({ id: 'latest_update', title: 'Latest Updates', view_more: true });
             const section3 = createHomeSection({ id: 'new_titles', title: 'New Titles', view_more: true });
             const section4 = createHomeSection({ id: 'top_alltime', title: 'Top All Time', view_more: false });
@@ -1331,10 +1338,10 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
                     param = `/${this.sourceTraversalPathName}/?page=${page}&order=latest`;
                     break;
                 case 'latest_update':
-                    param = `/${this.sourceTraversalPathName}/?page=${page}&order=update`;
+                    param = `/daftar-komik/page/${page}/?sortby=update`;
                     break;
                 case 'popular_today':
-                    param = `/${this.sourceTraversalPathName}/?page=${page}&order=popular`;
+                    param = `/daftar-komik/page/${page}/?orderby=popular`;
                     break;
                 default:
                     throw new Error(`Invalid homeSectionId | ${homepageSectionId}`);
@@ -1356,7 +1363,7 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
     }
     getCloudflareBypassRequest() {
         return createRequestObject({
-            url: `${this.baseUrl}/`,
+            url: `${this.baseUrl}/?s=naruto`,
             method: 'GET'
         });
     }
@@ -1366,27 +1373,27 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
         }
     }
 }
-exports.KiryuuMain = KiryuuMain;
+exports.KomikcastMain = KomikcastMain;
 
-},{"../Kiryuu/KiryuuMainParser":59,"paperback-extensions-common":14}],59:[function(require,module,exports){
+},{"./KomikcastMainParser":59,"paperback-extensions-common":14}],59:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KiryuuMainParser = void 0;
+exports.KomikcastMainParser = void 0;
 /* eslint-disable linebreak-style */
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const LanguageUtils_1 = require("../LanguageUtils");
 const entities = require("entities");
-class KiryuuMainParser {
+class KomikcastMainParser {
     constructor() {
         this.parseViewMore = ($, source) => {
             var _a, _b, _c;
             const mangas = [];
             const collectedIds = [];
-            for (const manga of $('div.bs', 'div.listupd').toArray()) {
+            for (const manga of $('div.list-update_item', 'div.list-update_items-wrapper').toArray()) {
                 const id = this.idCleaner((_a = $('a', manga).attr('href')) !== null && _a !== void 0 ? _a : '', source);
-                const title = $('a', manga).attr('title');
+                const title = $('h3.title', manga).text();
                 const image = (_c = (_b = this.getImageSrc($('img', manga))) === null || _b === void 0 ? void 0 : _b.split('?resize')[0]) !== null && _c !== void 0 ? _c : '';
-                const subtitle = $('div.epxs', manga).text().trim();
+                const subtitle = $('div.chapter', manga).text().trim();
                 if (collectedIds.includes(id) || !id || !title)
                     continue;
                 mangas.push(createMangaTile({
@@ -1402,7 +1409,7 @@ class KiryuuMainParser {
         this.isLastPage = ($, id) => {
             let isLast = true;
             if (id == 'view_more') {
-                const hasNext = Boolean($('a.r')[0]);
+                const hasNext = Boolean($('a.next.page-numbers')[0]);
                 if (hasNext)
                     isLast = false;
             }
@@ -1417,12 +1424,12 @@ class KiryuuMainParser {
     parseMangaDetails($, mangaId, source) {
         var _a, _b;
         const titles = [];
-        titles.push(this.decodeHTMLEntity($('h1.entry-title').text().trim().replace(' Bahasa Indonesia', '')));
-        const altTitles = $(`div.seriestualt`).text(); //Language dependant
-        const author = $(`span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, td:contains(${source.manga_selector_author})+td, .imptdt:contains(${source.manga_selector_author}) i`).contents().remove().last().text().trim(); //Language dependant
-        const artist = $(`span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, td:contains(${source.manga_selector_artist})+td, .imptdt:contains(${source.manga_selector_artist}) i`).contents().remove().last().text().trim(); //Language dependant
+        titles.push(this.decodeHTMLEntity($('h1.komik_info-content-body-title').text().trim().replace(' Bahasa Indonesia', '')));
+        //const altTitles = $(`div.komik_info-content-native`).text()
+        const author = $(`span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, .komik_info-content-info:contains(${source.manga_selector_author}), .imptdt:contains(${source.manga_selector_author}) i`).contents().remove().last().text().trim(); //Language dependant
+        const artist = $(`span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, .imptdt:contains(${source.manga_selector_artist}) i`).contents().remove().last().text().trim(); //Language dependant
         const image = this.getImageSrc($('img', 'div[itemprop="image"]'));
-        const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
+        const description = this.decodeHTMLEntity($('div[itemprop="articleBody"]').text().trim());
         const arrayTags = [];
         for (const tag of $('a', source.manga_tag_selector_box).toArray()) {
             const label = $(tag).text().trim();
@@ -1432,7 +1439,7 @@ class KiryuuMainParser {
             arrayTags.push({ id: id, label: label });
         }
         const tagSections = [createTagSection({ id: '0', label: 'genres', tags: arrayTags.map(x => createTag(x)) })];
-        const rawStatus = $(`span:contains(${source.manga_selector_status}), .fmed b:contains(${source.manga_selector_status})+span, .imptdt:contains(${source.manga_selector_status}) i`).contents().remove().last().text().trim();
+        const rawStatus = $(`span:contains(${source.manga_selector_status}), .komik_info-content-info b:contains(${source.manga_selector_status}), .imptdt:contains(${source.manga_selector_status}) i`).contents().remove().last().text().trim();
         let status = paperback_extensions_common_1.MangaStatus.ONGOING;
         switch (rawStatus.toLowerCase()) {
             case source.manga_StatusTypes.ONGOING.toLowerCase():
@@ -1448,7 +1455,6 @@ class KiryuuMainParser {
         return createManga({
             id: mangaId,
             titles: titles,
-            //altTitles: altTitles,
             image: image ? image : source.fallbackImage,
             status: status,
             author: author == '' ? 'Unknown' : author,
@@ -1458,16 +1464,16 @@ class KiryuuMainParser {
         });
     }
     parseChapterList($, mangaId, source) {
-        var _a, _b;
+        var _a;
         const chapters = [];
         let langCode = source.languageCode;
         if (mangaId.toUpperCase().endsWith('-RAW') && source.languageCode == 'gb')
             langCode = paperback_extensions_common_1.LanguageCode.KOREAN;
         for (const chapter of $(source.chapter_selector_item, source.chapter_selector_box).toArray()) {
-            const title = $('span.chapternum', chapter).text().trim();
+            const title = $('a.chapter-link-item', chapter).text().trim();
             const id = this.idCleaner((_a = $('a', chapter).attr('href')) !== null && _a !== void 0 ? _a : '', source);
-            const date = LanguageUtils_1.convertDate($('span.chapterdate', chapter).text().trim(), source);
-            const getNumber = (_b = chapter.attribs['data-num']) !== null && _b !== void 0 ? _b : '';
+            const date = LanguageUtils_1.convertDateAgo($('div.chapter-link-time', chapter).text().trim(), source);
+            const getNumber = title.replace('Chapter ', '');
             const chapterNumberRegex = getNumber.match(/(\d+\.?\d?)+/);
             let chapterNumber = 0;
             if (chapterNumberRegex && chapterNumberRegex[1])
@@ -1486,20 +1492,16 @@ class KiryuuMainParser {
         return chapters;
     }
     parseChapterDetails($, mangaId, chapterId) {
+        //const data = $.html()
         var _a, _b;
-        const data = $.html();
         const pages = [];
-        //To avoid our regex capturing more scrips, we stop at the first match of ";", also known as the first ending the matching script.
-        let obj = (_b = (_a = /ts_reader.run\((.[^;]+)\)/.exec(data)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : ''; //Get the data else return null.
-        if (obj == '')
-            throw new Error(`Failed to find page details script for manga ${mangaId}`); //If null, throw error, else parse data to json.
-        obj = JSON.parse(obj);
-        if (!(obj === null || obj === void 0 ? void 0 : obj.sources))
-            throw new Error(`Failed for find sources property for manga ${mangaId}`);
-        for (const index of obj.sources) { //Check all sources, if empty continue.
-            if ((index === null || index === void 0 ? void 0 : index.images.length) == 0)
-                continue;
-            index.images.map((p) => pages.push(encodeURI(p)));
+        for (const p of $('img', 'div.main-reading-area').toArray()) {
+            let image = (_a = $(p).attr('src')) !== null && _a !== void 0 ? _a : '';
+            if (!image)
+                image = (_b = $(p).attr('data-src')) !== null && _b !== void 0 ? _b : '';
+            if (!image)
+                throw new Error(`Unable to parse image(s) for chapterID: ${chapterId}`);
+            pages.push(image);
         }
         const chapterDetails = createChapterDetails({
             id: chapterId,
@@ -1510,23 +1512,28 @@ class KiryuuMainParser {
         return chapterDetails;
     }
     parseTags($, source) {
-        let genres = [];
-        for (let obj of $('.genrez li label').toArray()) {
-            let label = $(obj).text().trim();
-            let id = label.replace(' ', '-');
-            genres.push(createTag({ label: label, id: id }));
+        var _a, _b, _c;
+        const arrayTags = [];
+        for (const tag of $(source.tags_selector_item, source.tags_selector_box).toArray()) {
+            const labelraw = source.tags_selector_label ? $(source.tags_selector_label, tag).text().trim() : $(tag).text().trim();
+            const label = (_a = labelraw === null || labelraw === void 0 ? void 0 : labelraw.split('(')[0]) !== null && _a !== void 0 ? _a : '';
+            const id = encodeURI((_c = (_b = $('a', tag).attr('href')) === null || _b === void 0 ? void 0 : _b.replace(`${source.baseUrl}/genres/`, '').replace(/\//g, '')) !== null && _c !== void 0 ? _c : '');
+            if (!id || !label)
+                continue;
+            arrayTags.push({ id: id, label: label });
         }
-        return [createTagSection({ id: '0', label: 'genres', tags: genres })];
+        const tagSections = [createTagSection({ id: '0', label: 'genres', tags: arrayTags.map(x => createTag(x)) })];
+        return tagSections;
     }
     parseSearchResults($, source) {
         var _a, _b, _c;
         const mangas = [];
         const collectedIds = [];
-        for (const manga of $('div.bs', 'div.listupd').toArray()) {
+        for (const manga of $('div.list-update_item', 'div.list-update_items-wrapper').toArray()) {
             const id = this.idCleaner((_a = $('a', manga).attr('href')) !== null && _a !== void 0 ? _a : '', source);
-            const title = $('a', manga).attr('title');
+            const title = $('h3.title', manga).text();
             const image = (_c = (_b = this.getImageSrc($('img', manga))) === null || _b === void 0 ? void 0 : _b.split('?resize')[0]) !== null && _c !== void 0 ? _c : '';
-            const subtitle = $('div.epxs', manga).text().trim();
+            const subtitle = $('div.chapter', manga).text().trim();
             if (collectedIds.includes(id) || !id || !title)
                 continue;
             mangas.push(createMangaTile({
@@ -1580,15 +1587,15 @@ class KiryuuMainParser {
             //Popular Today
             if (section.id == 'popular_today') {
                 const popularToday = [];
-                if (!$('div.bsx', (_b = (_a = $(source.homescreen_PopularToday_selector)) === null || _a === void 0 ? void 0 : _a.parent()) === null || _b === void 0 ? void 0 : _b.next()).length) {
+                if (!$('div.swiper-slide', (_b = (_a = $(source.homescreen_PopularToday_selector)) === null || _a === void 0 ? void 0 : _a.parent()) === null || _b === void 0 ? void 0 : _b.next()).length) {
                     console.log('Unable to parse valid Popular Today section!');
                     continue;
                 }
-                for (const manga of $('div.bsx', $(source.homescreen_PopularToday_selector).parent().next()).toArray()) {
+                for (const manga of $('div.swiper-slide', $(source.homescreen_PopularToday_selector).parent().next()).toArray()) {
                     const id = this.idCleaner((_c = $('a', manga).attr('href')) !== null && _c !== void 0 ? _c : '', source);
-                    const title = $('div.tt', manga).text().trim();
+                    const title = $('div.title', manga).text();
                     const image = (_e = (_d = this.getImageSrc($('img', manga))) === null || _d === void 0 ? void 0 : _d.split('?resize')[0]) !== null && _e !== void 0 ? _e : '';
-                    const subtitle = $('div.epxs', manga).text().trim();
+                    const subtitle = $('div.chapter', manga).text().trim();
                     if (!id || !title)
                         continue;
                     popularToday.push(createMangaTile({
@@ -1610,7 +1617,7 @@ class KiryuuMainParser {
                 }
                 for (const manga of $(source.homescreen_LatestUpdate_selector_item, $(source.homescreen_LatestUpdate_selector_box).parent().next()).toArray()) {
                     const id = this.idCleaner((_h = $('a', manga).attr('href')) !== null && _h !== void 0 ? _h : '', source);
-                    const title = $('a', manga).attr('title');
+                    const title = $('h3', manga).text();
                     const image = (_k = (_j = this.getImageSrc($('img', manga))) === null || _j === void 0 ? void 0 : _j.split('?resize')[0]) !== null && _k !== void 0 ? _k : '';
                     const subtitle = $('a', $('li', manga).first()).text().trim();
                     if (!id || !title)
@@ -1739,7 +1746,7 @@ class KiryuuMainParser {
         return str;
     }
 }
-exports.KiryuuMainParser = KiryuuMainParser;
+exports.KomikcastMainParser = KomikcastMainParser;
 
 },{"../LanguageUtils":60,"entities":8,"paperback-extensions-common":14}],60:[function(require,module,exports){
 "use strict";
