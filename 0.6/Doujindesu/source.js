@@ -1339,13 +1339,13 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
             let param = '';
             switch (homepageSectionId) {
                 case 'new_titles':
-                    param = `/${this.sourceTraversalPathName}/?page=${page}&order=latest`;
+                    param = `/${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=latest`;
                     break;
                 case 'latest_update':
-                    param = `/${this.sourceTraversalPathName}/?page=${page}&order=update`;
+                    param = `/${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=update`;
                     break;
                 case 'popular_today':
-                    param = `/${this.sourceTraversalPathName}/?page=${page}&order=popular`;
+                    param = `/${this.sourceTraversalPathName}/page/${page}/?title=&author=&character=&statusx=&typex=&order=popular`;
                     break;
                 default:
                     throw new Error(`Invalid homeSectionId | ${homepageSectionId}`);
@@ -1428,8 +1428,8 @@ class DoujindesuMainParser {
     parseMangaDetails($, mangaId, source) {
         var _a, _b;
         const titles = [];
-        titles.push(this.decodeHTMLEntity($('h1.entry-title').text().trim().replace(' Bahasa Indonesia', '')));
-        const altTitles = $(`div.seriestualt`).text(); //Language dependant
+        titles.push(this.decodeHTMLEntity($('h1.title').text().trim().replace(' Bahasa Indonesia', '')));
+        const altTitles = $(`span.alter`).text(); //Language dependant
         const author = $(`span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, td:contains(${source.manga_selector_author})+td, .imptdt:contains(${source.manga_selector_author}) i`).contents().remove().last().text().trim(); //Language dependant
         const artist = $(`span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, td:contains(${source.manga_selector_artist})+td, .imptdt:contains(${source.manga_selector_artist}) i`).contents().remove().last().text().trim(); //Language dependant
         const image = this.getImageSrc($('img', 'div[itemprop="image"]'));
@@ -1475,9 +1475,9 @@ class DoujindesuMainParser {
         if (mangaId.toUpperCase().endsWith('-RAW') && source.languageCode == 'gb')
             langCode = paperback_extensions_common_1.LanguageCode.KOREAN;
         for (const chapter of $(source.chapter_selector_item, source.chapter_selector_box).toArray()) {
-            const title = $('span.chapternum', chapter).text().trim();
+            const title = $('span.eps', chapter).text().trim();
             const id = this.idCleaner((_a = $('a', chapter).attr('href')) !== null && _a !== void 0 ? _a : '', source);
-            const date = LanguageUtils_1.convertDate($('span.chapterdate', chapter).text().trim(), source);
+            const date = LanguageUtils_1.convertDate($('span.date', chapter).text().trim(), source);
             const getNumber = (_b = chapter.attribs['data-num']) !== null && _b !== void 0 ? _b : '';
             const chapterNumberRegex = getNumber.match(/(\d+\.?\d?)+/);
             let chapterNumber = 0;
@@ -1533,7 +1533,7 @@ class DoujindesuMainParser {
         var _a, _b, _c;
         const mangas = [];
         const collectedIds = [];
-        for (const manga of $('div.bs', 'div.listupd').toArray()) {
+        for (const manga of $('article.entry').toArray()) {
             const id = this.idCleaner((_a = $('a', manga).attr('href')) !== null && _a !== void 0 ? _a : '', source);
             const title = $('a', manga).attr('title');
             const image = (_c = (_b = this.getImageSrc($('img', manga))) === null || _b === void 0 ? void 0 : _b.split('?resize')[0]) !== null && _c !== void 0 ? _c : '';
