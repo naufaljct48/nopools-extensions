@@ -1429,7 +1429,7 @@ class DoujindesuMainParser {
         var _a, _b;
         const titles = [];
         titles.push(this.decodeHTMLEntity($('h1.title').text().trim().replace(' Bahasa Indonesia', '')));
-        const altTitles = $(`span.alter`).text(); //Language dependant
+        // const altTitles = $(`span.alter`).text(); //Language dependant
         const author = $(`span:contains(${source.manga_selector_author}), .fmed b:contains(${source.manga_selector_author})+span, td:contains(${source.manga_selector_author})+td, .imptdt:contains(${source.manga_selector_author}) i`).contents().remove().last().text().trim(); //Language dependant
         const artist = $(`span:contains(${source.manga_selector_artist}), .fmed b:contains(${source.manga_selector_artist})+span, td:contains(${source.manga_selector_artist})+td, .imptdt:contains(${source.manga_selector_artist}) i`).contents().remove().last().text().trim(); //Language dependant
         const image = this.getImageSrc($('img', '.thumbnail img'));
