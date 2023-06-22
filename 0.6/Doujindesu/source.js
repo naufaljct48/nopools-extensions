@@ -985,9 +985,9 @@ class Doujindesu extends DoujindesuMain_1.DoujindesuMain {
         this.homescreen_PopularToday_enabled = true;
         this.homescreen_LatestUpdate_enabled = true;
         this.homescreen_NewManga_enabled = true;
-        this.homescreen_TopAllTime_enabled = true;
-        this.homescreen_TopMonthly_enabled = true;
-        this.homescreen_TopWeekly_enabled = true;
+        this.homescreen_TopAllTime_enabled = false;
+        this.homescreen_TopMonthly_enabled = false;
+        this.homescreen_TopWeekly_enabled = false;
         /*
         ----TAG SELECTORS
         PRESET 1 (default): Genres are on homepage ex. https://mangagenki.com/
@@ -1170,11 +1170,11 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
         this.homescreen_LatestUpdate_selector_item = 'article.entry';
         this.homescreen_NewManga_enabled = true;
         this.homescreen_NewManga_selector = 'h1:contains(DAFTAR SEMUA)';
-        this.homescreen_TopAllTime_enabled = true;
+        this.homescreen_TopAllTime_enabled = false;
         this.homescreen_TopAllTime_selector = 'div.serieslist.pop.wpop.wpop-alltime';
-        this.homescreen_TopMonthly_enabled = true;
+        this.homescreen_TopMonthly_enabled = false;
         this.homescreen_TopMonthly_selector = 'div.serieslist.pop.wpop.wpop-monthly';
-        this.homescreen_TopWeekly_enabled = true;
+        this.homescreen_TopWeekly_enabled = false;
         this.homescreen_TopWeekly_selector = 'div.serieslist.pop.wpop.wpop-weekly';
         //----REQUEST MANAGER----
         this.requestManager = createRequestManager({
@@ -1712,26 +1712,24 @@ class DoujindesuMainParser {
     }
     getImageSrc(imageObj) {
         let image;
-        const src = imageObj?.attr('src');
-        const dataLazy = imageObj?.attr('data-lazy-src');
-        const srcset = imageObj?.attr('srcset');
-        const dataSRC = imageObj?.attr('data-src');
-        if ((typeof src != 'undefined') && !src?.startsWith('data')) {
-            image = imageObj?.attr('src');
-        }
-        else if ((typeof dataLazy != 'undefined') && !dataLazy?.startsWith('data')) {
-            image = imageObj?.attr('data-lazy-src');
-        }
-        else if ((typeof srcset != 'undefined') && !srcset?.startsWith('data')) {
-            image = imageObj?.attr('srcset')?.split(' ')[0] ?? '';
-        }
-        else if ((typeof dataSRC != 'undefined') && !dataSRC?.startsWith('data')) {
-            image = imageObj?.attr('data-src');
-        }
-        else {
+        const src = imageObj.hasAttr("src") ? imageObj.attr("abs:src") : undefined;
+        const dataLazy = imageObj.hasAttr("data-lazy-src") ? imageObj.attr("abs:data-lazy-src") : undefined;
+        const srcset = imageObj.hasAttr("srcset") ? imageObj.attr("abs:srcset") : undefined;
+        const dataSRC = imageObj.hasAttr("data-src") ? imageObj.attr("abs:data-src") : undefined;
+        
+        if (typeof src !== 'undefined' && !src.startsWith('data')) {
+            image = imageObj.attr("abs:src");
+        } else if (typeof dataLazy !== 'undefined' && !dataLazy.startsWith('data')) {
+            image = imageObj.attr("abs:data-lazy-src");
+        } else if (typeof srcset !== 'undefined' && !srcset.startsWith('data')) {
+            image = imageObj.attr("abs:srcset").split(" ")[0] || "";
+        } else if (typeof dataSRC !== 'undefined' && !dataSRC.startsWith('data')) {
+            image = imageObj.attr("abs:data-src");
+        } else {
             image = 'https://i.imgur.com/GYUxEX8.png';
         }
-        return encodeURI(decodeURI(this.decodeHTMLEntity(image?.trim() ?? '')));
+    
+        return encodeURI(decodeURI(this.decodeHTMLEntity(image.trim())));
     }
     decodeHTMLEntity(str) {
         return entities.decodeHTML(str);
