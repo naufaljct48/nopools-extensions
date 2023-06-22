@@ -1153,9 +1153,9 @@ class KiryuuMain extends paperback_extensions_common_1.Source {
          * Selector Default = "h2:contains(Popular Today)"
         */
         this.homescreen_PopularToday_enabled = true;
-        this.homescreen_PopularToday_selector = 'h2:contains(Terpopuler Hari Ini)';
+        this.homescreen_PopularToday_selector = 'h2:contains(Popular Today)';
         this.homescreen_LatestUpdate_enabled = true;
-        this.homescreen_LatestUpdate_selector_box = 'h2:contains(Rilisan Terbaru)';
+        this.homescreen_LatestUpdate_selector_box = 'h2:contains(Latest Update)';
         this.homescreen_LatestUpdate_selector_item = 'div.uta';
         this.homescreen_NewManga_enabled = true;
         this.homescreen_NewManga_selector = 'h3:contains(Serial baru)';
