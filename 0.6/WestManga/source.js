@@ -1163,11 +1163,11 @@ class WestMangaMain extends paperback_extensions_common_1.Source {
         this.homescreen_PopularToday_selector = 'h2:contains(Komik Popular Hari Ini...)';
         this.homescreen_LatestUpdate_enabled = true;
         this.homescreen_LatestUpdate_selector_box = 'h2:contains(UPDATE KOMIK LAINYA...)';
-        this.homescreen_LatestUpdate_selector_item = 'div.uta';
+        this.homescreen_LatestUpdate_selector_item = 'div.bsx';
         this.homescreen_NewManga_enabled = true;
         this.homescreen_NewManga_selector = 'h3:contains(Project Baru WM)';
         this.homescreen_TopAllTime_enabled = true;
-        this.homescreen_TopAllTime_selector = 'h2:contains(UPDATE PROJECT WESTMANGA)';
+        this.homescreen_TopAllTime_selector = 'div.serieslist.pop.wpop.wpop-alltime)';
         this.homescreen_TopMonthly_enabled = true;
         this.homescreen_TopMonthly_selector = 'div.serieslist.pop.wpop.wpop-monthly';
         this.homescreen_TopWeekly_enabled = true;
