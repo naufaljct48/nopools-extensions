@@ -1729,8 +1729,16 @@ class MangataleMainParser {
         else if ((typeof dataSRC != 'undefined') && !(dataSRC === null || dataSRC === void 0 ? void 0 : dataSRC.startsWith('data'))) {
             image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
         }
+        else if ((typeof dataSRC != 'undefined') && !(dataSRC === null || dataSRC === void 0 ? void 0 : dataSRC.startsWith('data'))) {
+            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
+        }
         else {
             image = 'https://i.imgur.com/GYUxEX8.png';
+        }
+
+        // Check if the URL starts with //
+        if (typeof image !== 'undefined' && image?.startsWith('//')) {
+            image = 'https:' + image;
         }
         return encodeURI(decodeURI(this.decodeHTMLEntity((_c = image === null || image === void 0 ? void 0 : image.trim()) !== null && _c !== void 0 ? _c : '')));
     }
