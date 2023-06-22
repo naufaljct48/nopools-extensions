@@ -1430,8 +1430,8 @@ class DoujindesuMainParser {
         const titles = [];
         titles.push(this.decodeHTMLEntity($('h1.title').text().trim().replace(' Bahasa Indonesia', '')));
         // const altTitles = $(`span.alter`).text(); //Language dependant
-        const author = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Author) + td:nth-child(2) > a`).contents().remove().last().text().trim(); //Language dependant
-        const artist = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Character) + td:nth-child(2) > a`).contents().remove().last().text().trim(); //Language dependant
+        const author = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Author) + td:nth-child(2) > a`).text(); //Language dependant
+        const artist = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Character) + td:nth-child(2) > a`).text(); //Language dependant
         const image = this.getImageSrc($('figure.thumbnail img').attr('src'));
         const description = this.decodeHTMLEntity($('section.metadata > div.pb-2 > p:nth-child(1)').text().trim());
         const arrayTags = [];
