@@ -932,7 +932,7 @@ exports.Doujindesu = exports.DoujindesuInfo = void 0;
 /* eslint-disable linebreak-style */
 const paperback_extensions_common_1 = require("paperback-extensions-common");
 const DoujindesuMain_1 = require("../Doujindesu/DoujindesuMain");
-const DOUJINDESU_DOMAIN = 'https://kiryuu.id';
+const DOUJINDESU_DOMAIN = 'https://212.32.226.234';
 exports.DoujindesuInfo = {
     version: DoujindesuMain_1.getExportVersion('0.0.0'),
     name: 'Doujindesu',
