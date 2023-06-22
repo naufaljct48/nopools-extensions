@@ -1302,7 +1302,7 @@ class WestMangaMain extends paperback_extensions_common_1.Source {
             const section1 = createHomeSection({ id: 'popular_today', title: 'Popular Today', view_more: false });
             const section2 = createHomeSection({ id: 'latest_update', title: 'Latest Updates', view_more: true });
             const section3 = createHomeSection({ id: 'new_titles', title: 'New Titles', view_more: true });
-            const section4 = createHomeSection({ id: 'top_alltime', title: 'Update Project', view_more: true });
+            const section4 = createHomeSection({ id: 'top_alltime', title: 'Top All Time', view_more: false });
             const section5 = createHomeSection({ id: 'top_monthly', title: 'Top Monthly', view_more: false });
             const section6 = createHomeSection({ id: 'top_weekly', title: 'Top Weekly', view_more: false });
             const sections = [];
