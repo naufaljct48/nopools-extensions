@@ -1711,28 +1711,27 @@ class DoujindesuMainParser {
         }
     }
     getImageSrc(imageObj) {
-        var _a, _b, _c;
         let image;
-        const src = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('src');
-        const dataLazy = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-lazy-src');
-        const srcset = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('srcset');
-        const dataSRC = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
-        if ((typeof src != 'undefined') && !(src === null || src === void 0 ? void 0 : src.startsWith('data'))) {
-            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('src');
+        const src = imageObj?.attr('src');
+        const dataLazy = imageObj?.attr('data-lazy-src');
+        const srcset = imageObj?.attr('srcset');
+        const dataSRC = imageObj?.attr('data-src');
+        if ((typeof src != 'undefined') && !src?.startsWith('data')) {
+            image = imageObj?.attr('src');
         }
-        else if ((typeof dataLazy != 'undefined') && !(dataLazy === null || dataLazy === void 0 ? void 0 : dataLazy.startsWith('data'))) {
-            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-lazy-src');
+        else if ((typeof dataLazy != 'undefined') && !dataLazy?.startsWith('data')) {
+            image = imageObj?.attr('data-lazy-src');
         }
-        else if ((typeof srcset != 'undefined') && !(srcset === null || srcset === void 0 ? void 0 : srcset.startsWith('data'))) {
-            image = (_b = (_a = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('srcset')) === null || _a === void 0 ? void 0 : _a.split(' ')[0]) !== null && _b !== void 0 ? _b : '';
+        else if ((typeof srcset != 'undefined') && !srcset?.startsWith('data')) {
+            image = imageObj?.attr('srcset')?.split(' ')[0] ?? '';
         }
-        else if ((typeof dataSRC != 'undefined') && !(dataSRC === null || dataSRC === void 0 ? void 0 : dataSRC.startsWith('data'))) {
-            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
+        else if ((typeof dataSRC != 'undefined') && !dataSRC?.startsWith('data')) {
+            image = imageObj?.attr('data-src');
         }
         else {
             image = 'https://i.imgur.com/GYUxEX8.png';
         }
-        return encodeURI(decodeURI(this.decodeHTMLEntity((_c = image === null || image === void 0 ? void 0 : image.trim()) !== null && _c !== void 0 ? _c : '')));
+        return encodeURI(decodeURI(this.decodeHTMLEntity(image?.trim() ?? '')));
     }
     decodeHTMLEntity(str) {
         return entities.decodeHTML(str);
