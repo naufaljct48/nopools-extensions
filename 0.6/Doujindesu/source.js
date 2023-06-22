@@ -1003,7 +1003,7 @@ class Doujindesu extends DoujindesuMain_1.DoujindesuMain {
         tags_selector_label: string = "span"
         */
         this.tags_SubdirectoryPathName = '';
-        this.tags_selector_box = 'ul.genre';
+        this.tags_selector_box = 'div.tags a';
         this.tags_selector_item = 'li';
         this.tags_selector_label = '';
     }
