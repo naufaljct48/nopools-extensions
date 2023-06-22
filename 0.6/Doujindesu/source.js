@@ -1742,7 +1742,7 @@ class DoujindesuMainParser {
         str = str.replace(/(https:\/\/|http:\/\/)/, '');
         str = str.replace(/\/$/, '');
         str = str.replace(`${base}/`, '');
-        str = str.replace(`${source.sourceTraversalPathName}/`, '');
+        str = str.replace(`${source.sourceTraversalPathName}`, '');
         return str;
     }
 }
