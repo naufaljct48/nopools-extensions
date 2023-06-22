@@ -1712,24 +1712,24 @@ class DoujindesuMainParser {
     }
     getImageSrc(imageObj) {
         let image;
-        const src = imageObj.hasAttr("src") ? imageObj.attr("abs:src") : undefined;
-        const dataLazy = imageObj.hasAttr("data-lazy-src") ? imageObj.attr("abs:data-lazy-src") : undefined;
-        const srcset = imageObj.hasAttr("srcset") ? imageObj.attr("abs:srcset") : undefined;
-        const dataSRC = imageObj.hasAttr("data-src") ? imageObj.attr("abs:data-src") : undefined;
-        
+        const src = imageObj?.hasAttr('data-src') ? imageObj.attr('abs:data-src') : undefined;
+        const dataLazy = imageObj?.hasAttr('data-lazy-src') ? imageObj.attr('abs:data-lazy-src') : undefined;
+        const srcset = imageObj?.hasAttr('srcset') ? imageObj.attr('abs:srcset').split(' ')[0] : undefined;
+        const dataSRC = imageObj?.hasAttr('src') ? imageObj.attr('abs:src') : undefined;
+    
         if (typeof src !== 'undefined' && !src.startsWith('data')) {
-            image = imageObj.attr("abs:src");
+            image = src;
         } else if (typeof dataLazy !== 'undefined' && !dataLazy.startsWith('data')) {
-            image = imageObj.attr("abs:data-lazy-src");
+            image = dataLazy;
         } else if (typeof srcset !== 'undefined' && !srcset.startsWith('data')) {
-            image = imageObj.attr("abs:srcset").split(" ")[0] || "";
+            image = srcset;
         } else if (typeof dataSRC !== 'undefined' && !dataSRC.startsWith('data')) {
-            image = imageObj.attr("abs:data-src");
+            image = dataSRC;
         } else {
             image = 'https://i.imgur.com/GYUxEX8.png';
         }
     
-        return encodeURI(decodeURI(this.decodeHTMLEntity(image.trim())));
+        return encodeURI(decodeURI(this.decodeHTMLEntity(image?.trim() ?? '')));    
     }
     decodeHTMLEntity(str) {
         return entities.decodeHTML(str);
