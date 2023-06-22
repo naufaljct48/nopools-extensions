@@ -1238,7 +1238,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
     getTags() {
         return __awaiter(this, void 0, void 0, function* () {
             const request = createRequestObject({
-                url: `${this.baseUrl}/manga/`,
+                url: `${this.baseUrl}/manga`,
                 method: 'GET',
                 //param: this.tags_SubdirectoryPathName
             });
@@ -1497,20 +1497,16 @@ class DoujindesuMainParser {
         return chapters;
     }
     parseChapterDetails($, mangaId, chapterId) {
+        //const data = $.html()
         var _a, _b;
-        const data = $.html();
         const pages = [];
-        //To avoid our regex capturing more scrips, we stop at the first match of ";", also known as the first ending the matching script.
-        let obj = (_b = (_a = /ts_reader.run\((.[^;]+)\)/.exec(data)) === null || _a === void 0 ? void 0 : _a[1]) !== null && _b !== void 0 ? _b : ''; //Get the data else return null.
-        if (obj == '')
-            throw new Error(`Failed to find page details script for manga ${mangaId}`); //If null, throw error, else parse data to json.
-        obj = JSON.parse(obj);
-        if (!(obj === null || obj === void 0 ? void 0 : obj.sources))
-            throw new Error(`Failed for find sources property for manga ${mangaId}`);
-        for (const index of obj.sources) { //Check all sources, if empty continue.
-            if ((index === null || index === void 0 ? void 0 : index.images.length) == 0)
-                continue;
-            index.images.map((p) => pages.push(encodeURI(p)));
+        for (const p of $('img', '#reader>.main img').toArray()) {
+            let image = (_a = $(p).attr('src')) !== null && _a !== void 0 ? _a : '';
+            if (!image)
+                image = (_b = $(p).attr('data-src')) !== null && _b !== void 0 ? _b : '';
+            if (!image)
+                throw new Error(`Unable to parse image(s) for chapterID: ${chapterId}`);
+            pages.push(image);
         }
         const chapterDetails = createChapterDetails({
             id: chapterId,
@@ -1522,7 +1518,7 @@ class DoujindesuMainParser {
     }
     parseTags($, source) {
         let genres = [];
-        for (let obj of $('.genrez li label').toArray()) {
+        for (let obj of $('.lbx .genx input', '').toArray()) {
             let label = $(obj).text().trim();
             let id = label.replace(' ', '-');
             genres.push(createTag({ label: label, id: id }));
@@ -1746,7 +1742,7 @@ class DoujindesuMainParser {
         str = str.replace(/(https:\/\/|http:\/\/)/, '');
         str = str.replace(/\/$/, '');
         str = str.replace(`${base}/`, '');
-        str = str.replace(`${source.sourceTraversalPathName}/`, '');
+        str = str.replace(`${source.sourceTraversalPathName}`, '');
         return str;
     }
 }
