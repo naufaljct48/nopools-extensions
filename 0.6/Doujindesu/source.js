@@ -1264,7 +1264,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
                 request = createRequestObject({
                     url: `${this.baseUrl}/`,
                     method: 'GET',
-                    param: `genres/${(_b = query === null || query === void 0 ? void 0 : query.includedTags) === null || _b === void 0 ? void 0 : _b.map((x) => x.id)[0]}/page/${page}`
+                    param: `genre/${(_b = query === null || query === void 0 ? void 0 : query.includedTags) === null || _b === void 0 ? void 0 : _b.map((x) => x.id)[0]}/page/${page}`
                 });
             }
             const response = yield this.requestManager.schedule(request, 1);
@@ -1518,7 +1518,7 @@ class DoujindesuMainParser {
     }
     parseTags($, source) {
         let genres = [];
-        for (let obj of $('.lbx .genx input', '').toArray()) {
+        for (let obj of $('.lbx .genx input').toArray()) {
             let label = $(obj).text().trim();
             let id = label.replace(' ', '-');
             genres.push(createTag({ label: label, id: id }));
