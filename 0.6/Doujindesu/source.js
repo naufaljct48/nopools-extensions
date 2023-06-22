@@ -1432,7 +1432,7 @@ class DoujindesuMainParser {
         // const altTitles = $(`span.alter`).text(); //Language dependant
         const author = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Author) + td:nth-child(2) > a`).contents().remove().last().text().trim(); //Language dependant
         const artist = $(`section.metadata > table:nth-child(2) > tbody > tr.pages > td:contains(Character) + td:nth-child(2) > a`).contents().remove().last().text().trim(); //Language dependant
-        const image = this.getImageSrc($('a > figure.thumbnail > img').attr('src'));
+        const image = this.getImageSrc($('figure.thumbnail img').attr('src'));
         const description = this.decodeHTMLEntity($('section.metadata > div.pb-2 > p:nth-child(1)').text().trim());
         const arrayTags = [];
         for (const tag of $('a', source.manga_tag_selector_box).toArray()) {
@@ -1711,25 +1711,28 @@ class DoujindesuMainParser {
         }
     }
     getImageSrc(imageObj) {
+        var _a, _b, _c;
         let image;
-        const src = imageObj?.hasAttr('data-src') ? imageObj.attr('abs:data-src') : undefined;
-        const dataLazy = imageObj?.hasAttr('data-lazy-src') ? imageObj.attr('abs:data-lazy-src') : undefined;
-        const srcset = imageObj?.hasAttr('srcset') ? imageObj.attr('abs:srcset').split(' ')[0] : undefined;
-        const dataSRC = imageObj?.hasAttr('src') ? imageObj.attr('abs:src') : undefined;
-    
-        if (typeof src !== 'undefined' && !src.startsWith('data')) {
-            image = src;
-        } else if (typeof dataLazy !== 'undefined' && !dataLazy.startsWith('data')) {
-            image = dataLazy;
-        } else if (typeof srcset !== 'undefined' && !srcset.startsWith('data')) {
-            image = srcset;
-        } else if (typeof dataSRC !== 'undefined' && !dataSRC.startsWith('data')) {
-            image = dataSRC;
-        } else {
+        const src = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('src');
+        const dataLazy = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-lazy-src');
+        const srcset = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('srcset');
+        const dataSRC = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
+        if ((typeof src != 'undefined') && !(src === null || src === void 0 ? void 0 : src.startsWith('data'))) {
+            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('src');
+        }
+        else if ((typeof dataLazy != 'undefined') && !(dataLazy === null || dataLazy === void 0 ? void 0 : dataLazy.startsWith('data'))) {
+            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-lazy-src');
+        }
+        else if ((typeof srcset != 'undefined') && !(srcset === null || srcset === void 0 ? void 0 : srcset.startsWith('data'))) {
+            image = (_b = (_a = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('srcset')) === null || _a === void 0 ? void 0 : _a.split(' ')[0]) !== null && _b !== void 0 ? _b : '';
+        }
+        else if ((typeof dataSRC != 'undefined') && !(dataSRC === null || dataSRC === void 0 ? void 0 : dataSRC.startsWith('data'))) {
+            image = imageObj === null || imageObj === void 0 ? void 0 : imageObj.attr('data-src');
+        }
+        else {
             image = 'https://i.imgur.com/GYUxEX8.png';
         }
-    
-        return encodeURI(decodeURI(this.decodeHTMLEntity(image?.trim() ?? '')));    
+        return encodeURI(decodeURI(this.decodeHTMLEntity((_c = image === null || image === void 0 ? void 0 : image.trim()) !== null && _c !== void 0 ? _c : '')));   
     }
     decodeHTMLEntity(str) {
         return entities.decodeHTML(str);
