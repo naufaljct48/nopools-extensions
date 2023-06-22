@@ -8,6 +8,7 @@ Join the [Discord](https://discord.gg/rmf6jQpMU9) for support and more sources!
 Indonesian Paperback Sources:
 
 - Kanzenin (18+)
+- Doujindesu (18+)
 - Kiryuu
 - Komikcast
 - KomikIndo
