@@ -1211,7 +1211,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
         this.homescreen_PopularToday_selector = "h2:contains(Komik Popular Hari Ini...)";
         this.homescreen_LatestUpdate_enabled = true;
         this.homescreen_LatestUpdate_selector_box = "h2:contains(UPDATE PROJECT WESTMANGA)";
-        this.homescreen_LatestUpdate_selector_item = "div.uta";
+        this.homescreen_LatestUpdate_selector_item = "div.ply";
         this.homescreen_NewManga_enabled = true;
         this.homescreen_NewManga_selector = "h3:contains(Project Baru WM)";
         this.homescreen_TopAllTime_enabled = true;
@@ -1870,10 +1870,8 @@ class WestManga extends MangaStream_1.MangaStream {
         //Disabling some of these will cause some Home-Page tests to fail, edit these test files to match the setting.
         //Always be sure to test this in the app!
         this.homescreen_PopularToday_enabled = true;
-        this.homescreen_PopularToday_selector = "h2:contains(Komik Popular Hari Ini...)";
         this.homescreen_LatestUpdate_enabled = true;
-        this.homescreen_LatestUpdate_selector_box = "h2:contains(UPDATE KOMIK LAINYA...)";
-        this.homescreen_NewManga_enabled = false;
+        this.homescreen_NewManga_enabled = true;
         this.homescreen_TopAllTime_enabled = false;
         this.homescreen_TopMonthly_enabled = false;
         this.homescreen_TopWeekly_enabled = false;
@@ -1891,7 +1889,7 @@ class WestManga extends MangaStream_1.MangaStream {
           tags_selector_item: string = "li"
           tags_selector_label: string = "span"
           */
-        this.manga_tag_selector_box = ".seriestugenre";
+        this.manga_tag_selector_box = "div.seriestugenre";
     }
 }
 exports.WestManga = WestManga;
