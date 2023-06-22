@@ -1303,8 +1303,8 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
     }
     getHomePageSections(sectionCallback) {
         return __awaiter(this, void 0, void 0, function* () {
-            const section1 = createHomeSection({ id: 'popular_today', title: 'Popular Today', view_more: false });
-            const section2 = createHomeSection({ id: 'latest_update', title: 'Latest Updates', view_more: true });
+            const section1 = createHomeSection({ id: 'popular_today', title: 'Doujin', view_more: true });
+            const section2 = createHomeSection({ id: 'latest_update', title: 'Manhwa', view_more: true });
             const section3 = createHomeSection({ id: 'new_titles', title: 'New Titles', view_more: true });
             const section4 = createHomeSection({ id: 'top_alltime', title: 'Top All Time', view_more: false });
             const section5 = createHomeSection({ id: 'top_monthly', title: 'Top Monthly', view_more: false });
@@ -1413,12 +1413,12 @@ class DoujindesuMainParser {
         this.isLastPage = ($, id) => {
             let isLast = true;
             if (id == 'view_more') {
-                const hasNext = Boolean($('a.r')[0]);
+                const hasNext = Boolean($('.pagination ul li a')[0]);
                 if (hasNext)
                     isLast = false;
             }
             if (id == 'search_request') {
-                const hasNext = Boolean($('a.next.page-numbers')[0]);
+                const hasNext = Boolean($('.pagination ul li a')[0]);
                 if (hasNext)
                     isLast = false;
             }
