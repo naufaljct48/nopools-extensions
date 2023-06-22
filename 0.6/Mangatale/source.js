@@ -1087,18 +1087,18 @@ class MangataleMain extends paperback_extensions_common_1.Source {
          * Default = English Translation
          */
         this.dateMonths = {
-            january: 'Januari',
-            february: 'Februari',
-            march: 'Maret',
+            january: 'January',
+            february: 'February',
+            march: 'March',
             april: 'April',
-            may: 'Mei',
-            june: 'Juni',
-            july: 'Juli',
-            august: 'Agustus',
+            may: 'May',
+            june: 'June',
+            july: 'July',
+            august: 'August',
             september: 'September',
-            october: 'Oktober',
+            october: 'October',
             november: 'November',
-            december: 'Desember'
+            december: 'December'
         };
         /**
          * In this object, add the site's translations for the following time formats, case insensitive.
@@ -1107,14 +1107,14 @@ class MangataleMain extends paperback_extensions_common_1.Source {
          */
         this.dateTimeAgo = {
             now: ['less than an hour', 'just now'],
-            yesterday: ['kemarin'],
-            years: ['tahun'],
-            months: ['bulan'],
-            weeks: ['minggu'],
-            days: ['hari'],
-            hours: ['jam'],
-            minutes: ['menit'],
-            seconds: ['detik']
+            yesterday: ['yesterday'],
+            years: ['year'],
+            months: ['month'],
+            weeks: ['weeks'],
+            days: ['day'],
+            hours: ['hour'],
+            minutes: ['min'],
+            seconds: ['second']
         };
         //----CHAPTER SELECTORS----
         /**
