@@ -1004,7 +1004,7 @@ class Doujindesu extends DoujindesuMain_1.DoujindesuMain {
         */
         this.tags_SubdirectoryPathName = '';
         this.tags_selector_box = 'div.tags';
-        this.tags_selector_item = 'li';
+        this.tags_selector_item = '';
         this.tags_selector_label = '';
     }
 }
@@ -1126,7 +1126,7 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
          * This box contains all the chapter items
          * Default = "div#chapterlist.eplister"
         */
-        this.chapter_selector_box = 'div#chapter_list, #chapter_list li';
+        this.chapter_selector_box = 'div#chapter_list';
         /**
          * The selector for each individual chapter element
          * This is the element for each small box containing the chapter information
