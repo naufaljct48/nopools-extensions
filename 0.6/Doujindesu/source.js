@@ -1110,15 +1110,15 @@ class DoujindesuMain extends paperback_extensions_common_1.Source {
          * Default =  English Translation
          */
         this.dateTimeAgo = {
-            now: ['less than an hour', 'just now'],
-            yesterday: ['kemarin'],
-            years: ['tahun'],
-            months: ['bulan'],
-            weeks: ['minggu'],
-            days: ['hari'],
+            now: ['less than an hour', 'just now', 'NOW'],
+            yesterday: ['kmr'],
+            years: ['thn'],
+            months: ['bln'],
+            weeks: ['mgu'],
+            days: ['hri'],
             hours: ['jam'],
-            minutes: ['menit'],
-            seconds: ['detik']
+            minutes: ['mnt'],
+            seconds: ['dtk']
         };
         //----CHAPTER SELECTORS----
         /**
