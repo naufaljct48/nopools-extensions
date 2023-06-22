@@ -1737,13 +1737,13 @@ class DoujindesuMainParser {
     decodeHTMLEntity(str) {
         return entities.decodeHTML(str);
     }
-    idCleaner(str, source) {
-        const base = source.baseUrl.split('://').pop();
-        str = str.replace(/(https:\/\/|http:\/\/)/, '');
-        str = str.replace(/\/$/, '');
-        str = str.replace(`${base}/`, '');
-        str = str.replace(`${source.sourceTraversalPathName}/`, '');
-        return str;
+    idCleaner(str) {
+        let cleanId = str;
+        cleanId = cleanId.replace(/\/$/, '');
+        cleanId = cleanId.split('/').pop() ?? null;
+        if (!cleanId)
+            throw new Error(`Unable to parse id for ${str}`);
+        return cleanId;
     }
 }
 exports.DoujindesuMainParser = DoujindesuMainParser;
