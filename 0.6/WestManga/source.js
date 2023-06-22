@@ -1167,7 +1167,7 @@ class WestMangaMain extends paperback_extensions_common_1.Source {
         this.homescreen_NewManga_enabled = true;
         this.homescreen_NewManga_selector = 'h3:contains(Project Baru WM)';
         this.homescreen_TopAllTime_enabled = true;
-        this.homescreen_TopAllTime_selector = 'div.serieslist.pop.wpop.wpop-alltime)';
+        this.homescreen_TopAllTime_selector = 'div.serieslist.pop.wpop.wpop-alltime';
         this.homescreen_TopMonthly_enabled = true;
         this.homescreen_TopMonthly_selector = 'div.serieslist.pop.wpop.wpop-monthly';
         this.homescreen_TopWeekly_enabled = true;
