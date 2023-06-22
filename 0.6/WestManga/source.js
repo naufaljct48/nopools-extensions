@@ -1118,7 +1118,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
          */
         this.manga_selector_artist = "Artist";
         this.manga_selector_status = "Status";
-        this.manga_tag_selector_box = "span.mgen";
+        this.manga_tag_selector_box = "div.seriestugenre";
         this.manga_tag_TraversalPathName = "genres";
         /**
          * The selector for the manga status.
