@@ -14,6 +14,7 @@ Indonesian Paperback Sources:
 - KomikTap (18+)
 - Komiku.com
 - Mangatale.co
+- Mangasusu (18+)
 - WestManga
 - Shinigami
 
