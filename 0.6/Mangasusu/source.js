@@ -1137,8 +1137,8 @@ class MangasusuParser extends MangaStreamParser_1.MangaStreamParser {
                 continue;
             titles.push(this.decodeHTMLEntity(title.trim()));
         }
-        const author = $("span:contains(Author)").contents().last().text().trim(); //Language dependant
-        const artist = $("span:contains(Serialization)").contents().last().text().trim(); //Language dependant
+        const author = $(`td:contains(${source.manga_selector_author})+td`).contents().last().text().trim(); //Language dependant
+        const artist = $(`td:contains(${source.manga_selector_artist})+td`).contents().last().text().trim(); //Language dependant
         const image = this.getImageSrc($("img", 'div[itemprop="image"]'));
         const description = this.decodeHTMLEntity($('div[itemprop="description"]').text().trim());
         const arrayTags = [];
