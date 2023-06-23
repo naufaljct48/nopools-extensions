@@ -1363,7 +1363,7 @@ class KomikcastMain extends paperback_extensions_common_1.Source {
     }
     getCloudflareBypassRequest() {
         return createRequestObject({
-            url: `${this.baseUrl}/?s=naruto`,
+            url: `${this.baseUrl}/`,
             method: 'GET'
         });
     }
@@ -1555,7 +1555,7 @@ class KomikcastMainParser {
             throw new Error('Unable to parse valid update section!');
         for (const manga of $(source.homescreen_LatestUpdate_selector_item, $(source.homescreen_LatestUpdate_selector_box).parent().next()).toArray()) {
             const id = this.idCleaner((_c = $('a', manga).attr('href')) !== null && _c !== void 0 ? _c : '', source);
-            const mangaDate = LanguageUtils_1.convertDateAgo($('li > span', $('div.luf', manga)).first().text().trim(), source);
+            const mangaDate = LanguageUtils_1.convertDateAgo($('li > span > i', $('div.luf', manga)).first().text().trim(), source);
             //Check if manga time is older than the time porvided, is this manga has an update. Return this.
             if (!id)
                 continue;
