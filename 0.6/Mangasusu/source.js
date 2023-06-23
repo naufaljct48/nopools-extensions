@@ -1424,7 +1424,7 @@ class MangaStream extends paperback_extensions_common_1.Source {
         this.homescreen_PopularToday_selector = "h2:contains(Popular Today)";
         this.homescreen_LatestUpdate_enabled = true;
         this.homescreen_LatestUpdate_selector_box = "h2:contains(Latest Update)";
-        this.homescreen_LatestUpdate_selector_item = "div.uta";
+        this.homescreen_LatestUpdate_selector_item = "div.bsx";
         this.homescreen_NewManga_enabled = true;
         this.homescreen_NewManga_selector = "h3:contains(New Series)";
         this.homescreen_TopAllTime_enabled = false;
