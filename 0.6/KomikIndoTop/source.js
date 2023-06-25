@@ -990,7 +990,7 @@ const KOMIKINDOTOP_DOMAIN = "https://komikindo.top";
 exports.KomikIndoTopInfo = {
     version: (0, MangaStream_1.getExportVersion)("0.0.1"),
     name: "KomikIndoTop",
-    description: "Extension that pulls manga from KomikIndo.top",
+    description: "Extension that pulls manga from KomikIndoTop",
     author: "NaufalJCT48",
     authorWebsite: "http://github.com/naufaljct48",
     icon: "icon.png",
