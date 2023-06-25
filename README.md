@@ -11,6 +11,7 @@ Indonesian Paperback Sources:
 - Kiryuu
 - Komikcast
 - KomikIndo
+- KomikIndo.Top (18+)
 - KomikTap (18+)
 - Komiku.com
 - Mangatale.co
@@ -20,6 +21,6 @@ Indonesian Paperback Sources:
 
 ## Current Repo
 
-| Source Type  | Description                                   | Link                                                               |
-| ------------ | --------------------------------------------- | ------------------------------------------------------------------ |
-| Indonesian   | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
+| Source Type | Description                                   | Link                                                               |
+| ----------- | --------------------------------------------- | ------------------------------------------------------------------ |
+| Indonesian  | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
