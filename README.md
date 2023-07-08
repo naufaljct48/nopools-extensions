@@ -23,4 +23,4 @@ Indonesian Paperback Sources:
 
 | Source Type | Description                                   | Link                                                               |
 | ----------- | --------------------------------------------- | ------------------------------------------------------------------ |
-| Indonesian  | Stable versions of the sources. (Recommended) | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
+| Indonesian  | For 0.6 Version Paperback                     | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
