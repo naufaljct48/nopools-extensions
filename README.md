@@ -24,3 +24,5 @@ Indonesian Paperback Sources:
 | Source Type | Description                                   | Link                                                               |
 | ----------- | --------------------------------------------- | ------------------------------------------------------------------ |
 | Indonesian  | For 0.6 ~ 0.7 Version of Paperback                     | [Click me!](https://naufaljct48.github.io/nopools-extensions/0.6/) |
+| Madara      | 0.8 Ver                                       | [Click me!](https://naufaljct48.github.io/nopools-ext/madara)      |
+| MangaStream | 0.8 Ver                                       | [Click me!](https://naufaljct48.github.io/nopools-ext/mangastream) |
